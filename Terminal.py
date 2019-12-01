@@ -1,21 +1,47 @@
+# Imported Modules
 import Modules.CardModule as CardModule
 
-# Testing Input
-def AskForPin():
-  i= int(input("Please Choose A Card 1-5: ")) - 1
-  pin = int(input("Please Enter Card Pin: "))
-  SelectedCard = CardModule.PredefinedCards[i]
-  if SelectedCard.CheckPin(pin):
-    print("Welcome To PyATM")
-  else:
-    if SelectedCard.IsValid:
-      print("Incorrect Pin")
-      print("Remaining Retries:", 5-CardModule.PredefinedCards[i].ErrorCounter)
-      retry = input("Would U like to Try Again? Y/N: ")
-      if retry == "Y": AskForPin()
-      else: print("Thank You for Using PyATM")
-    else:
-      print("Invalid Card")
-  pass
+def SelectCard():
+    # Method Description:
+    """Selects A Card Using A Terminal As UI"""
+    # Endless Loop Till User Enters A Valid Card Number
+    while(True):
+        # Prompt user to select card
+        i= int(input("Please choose a card: "))
+        # If the position entered is correct
+        if (i > 0) and (i < len(CardModule.PredefinedCards) + 1): break
+        else: print("Invalid Input, Please Try Another Card.")
+    # Holds and gets a card using a valid index.
+    selectedCard = CardModule.PredefinedCards[i-1]
+    # Checks if the card is valid and displays corresponding messages.
+    if (selectedCard.IsValid == True): 
+        print ("Welcome", selectedCard.UserName, "!")
+        return selectedCard
+    else: 
+        print("This card has been deactivated or invalid, please contact your nank.")
+        pass
 
-AskForPin()
+def AskForPin(userCard):
+    # Method Description:
+    """Asks and Checks the Pin of a Given Card in A Terminal As UI"""
+    # Endless Loop Till User Enters A correct PIN or cancels
+    while(True):
+        pin = int(input("Please Enter Card Pin: "))
+        if userCard.CheckPin(pin):
+            print("Welcome To PyATM")
+            return True
+        else:
+            print("Incorrect Pin!")
+            if (userCard.ErrorCounter == 5):
+                print("Pin has been entered incorrectly too many times, Card deactivated!")
+                return False
+            print("Remaining Retries:", 5-userCard.ErrorCounter)
+            retry = input("Would U like to Try Again? Y/N: ")
+            if retry not in ["Y","y","Yes","yes","Yea","yea"]:
+                return False
+
+# Main Function
+UserCard = CardModule.SearchCardsByID(123456)
+if (UserCard): access = AskForPin(UserCard)
+if (access): print("you can do bla bla bla bla......")
+else: print("Card Returned!")

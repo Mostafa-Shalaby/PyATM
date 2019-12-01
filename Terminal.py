@@ -40,8 +40,13 @@ def AskForPin(userCard):
             if retry not in ["Y","y","Yes","yes","Yea","yea"]:
                 return False
 
-# Main Function
-UserCard = CardModule.SearchCardsByID(123456)
+# Main Function:-
+
+# Selects Card
+UserCard = SelectCard()
+# Checks the Pin
 if (UserCard): access = AskForPin(UserCard)
+# If access is granted continues doing stuf...
 if (access): print("you can do bla bla bla bla......")
+# if access is denied, card is returned.
 else: print("Card Returned!")

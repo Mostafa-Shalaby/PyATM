@@ -4,21 +4,26 @@ import Modules.CardModule as CardModule
 def SelectCard():
     # Method Description:
     """Selects A Card Using A Terminal As UI"""
+
     # Endless Loop Till User Enters A Valid Card Number
     while(True):
         # Prompt user to select card
         i= int(input("Please choose a card: "))
         # If the position entered is correct
-        if (i > 0) and (i < len(CardModule.PredefinedCards) + 1): break
-        else: print("Invalid Input, Please Try Another Card.")
+        if (i > 0) and (i < len(CardModule.PredefinedCards) + 1):
+            break
+        else: 
+            print("Invalid Input, Please Try Another Card.")
+
     # Holds and gets a card using a valid index.
     selectedCard = CardModule.PredefinedCards[i-1]
+
     # Checks if the card is valid and displays corresponding messages.
     if (selectedCard.IsValid == True): 
         print ("Welcome", selectedCard.UserName, "!")
         return selectedCard
     else: 
-        print("This card has been deactivated or invalid, please contact your nank.")
+        print("This card has been deactivated or invalid, please contact your bank.")
         pass
 
 def AskForPin(userCard):
@@ -44,9 +49,16 @@ def AskForPin(userCard):
 
 # Selects Card
 UserCard = SelectCard()
+
 # Checks the Pin
-if (UserCard): access = AskForPin(UserCard)
+if (UserCard): 
+    access = AskForPin(UserCard)
+
 # If access is granted continues doing stuf...
-if (access): print("you can do bla bla bla bla......")
+if (access): 
+    print("you can do bla bla bla bla......")
+    print("your account type is", UserCard.accountType)
+
 # if access is denied, card is returned.
-else: print("Card Returned!")
+else: 
+    print("Card Returned!")

@@ -2,19 +2,28 @@ class Card:
     # Class Description:
     """The class for virtual ATM cards"""
 
-    def __init__(self, id, pin, bankName, userName, expDate, errorCounter = 0 , isValid = True):
+    def __init__(self, id, pin, bankName, userName, expDate, errorCounter = 0 , isValid = True, accountType = "Checking"):
         # Holds the account ID (UserID in Bank Database)
         self.ID = id
+
         # Holds the Pin of the Card
         self.Pin = pin
+
         # Holds the Name of the Bank
         self.BankName = bankName
+
+        # Holds the Type of the account [Ammar]
+        self.accountType = accountType
+
         # Holds the Name of the User
         self.UserName = userName
+
         # Holds the Card Expiration Date
         self.ExpDate = expDate
+
         # Hold the number of times Pin has Entered Incorrectly (Defaults to 0, unless initialized otherwise)
         self.ErrorCounter = errorCounter
+
         # Tells if the card is Valid (Defaults to True, unless initialized otherwise)
         self.IsValid = isValid
 
@@ -34,9 +43,9 @@ class Card:
 
 # A list of instances of cards with some random data for testing.
 PredefinedCards = [
-    Card(123456, 1568, "NBE", "Ahmed Saeed" , "Feb, 2020"),
+    Card(123456, 1568, "NBE", "Ahmed Saeed" , "Feb, 2020", accountType="Saving"),
     Card(234567, 1234, "NBE", "Mohammed Khalid" ,"Feb, 2020"),
-    Card(345678, 8746, "NBE", "Osama Khalid" ,"Feb, 2020", 4),
+    Card(345678, 8746, "NBE", "Osama Khalid" ,"Feb, 2020", 4, accountType="Saving"),
     Card(456789, 5648, "NBE", "Hatiem Yasser" ,"Feb, 2020", 2),
     Card(567890, 1564, "NBE", "Samir Ganim" ,"Feb, 2020", 5, False),
 ]

@@ -1,5 +1,6 @@
 # Imported Modules
 import Modules.CardModule as CardModule
+import Modules.DbModule as DbModule
 
 def SelectCard():
     # Method Description:
@@ -45,6 +46,29 @@ def AskForPin(userCard):
             if retry not in ["Y","y","Yes","yes","Yea","yea"]:
                 return False
 
+def SelectService(userCard):
+    # Method Description:
+    """Selects and Runs Different ATM Services in A Terminal As UI"""
+    # Endless Loop For User To Select a Service
+    while(True):
+        print("Avaliable Services Are:", "1. Check Balance", "2. Quit", sep="\n")
+        service = input("Which Service would u like to used: ")
+        # First Service Avaliable is Checking Their Balance
+        if service in ["1", "Check Balance", "check balance", "Balance", "balance"]:
+            print("Your Current Balance is:")
+            print(DbModule.BalanceCheck(userCard.ID, userCard.accountType))
+            retry = input("Would U like to Use Another Service? Y/N: ")
+            if retry not in ["Y","y","Yes","yes","Yea","yea"]:
+                break
+        # Exit point
+        elif service in ["2", "Quit", "quit"]:
+            break
+        # For invalid entries, display a message, and loop the function.
+        else:
+            print("Invalid Input, Please choose one of the Avaliable Services")
+    print("Thank you for Using PyATM")
+    print("Card Returned!")
+    pass
 # Main Function:-
 
 # Selects Card
@@ -56,8 +80,8 @@ if (UserCard):
 
 # If access is granted continues doing stuf...
 if (access): 
-    print("you can do bla bla bla bla......")
-    print("your account type is", UserCard.accountType)
+    print("Your Account type is", UserCard.accountType)
+    SelectService(UserCard)
 
 # if access is denied, card is returned.
 else: 

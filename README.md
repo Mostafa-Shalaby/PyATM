@@ -1,2 +1,2 @@
 # PyATM
-Implementation of a ATM program using Python.
+Simulation of an ATM machine and Bank System using Python.

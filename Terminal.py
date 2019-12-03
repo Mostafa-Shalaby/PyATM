@@ -30,6 +30,7 @@ def SelectCard():
 def AskForPin(userCard):
     # Method Description:
     """Asks and Checks the Pin of a Given Card in A Terminal As UI"""
+
     # Endless Loop Till User Enters A correct PIN or cancels
     while(True):
         pin = int(input("Please Enter Card Pin: "))
@@ -49,26 +50,52 @@ def AskForPin(userCard):
 def SelectService(userCard):
     # Method Description:
     """Selects and Runs Different ATM Services in A Terminal As UI"""
+
     # Endless Loop For User To Select a Service
     while(True):
-        print("Avaliable Services Are:", "1. Check Balance", "2. Quit", sep="\n")
-        service = input("Which Service would u like to used: ")
-        # First Service Avaliable is Checking Their Balance
+        print("Avaliable Services Are:", "1. Check Balance", "2. Withdraw", "3. Quit", sep="\n")
+        service = input("Which Service would u like to use: ")
+
+        # First Service Avaliable is (Checking Balance)
         if service in ["1", "Check Balance", "check balance", "Balance", "balance"]:
             print("Your Current Balance is:")
             print(DbModule.BalanceCheck(userCard.ID, userCard.accountType))
             retry = input("Would U like to Use Another Service? Y/N: ")
             if retry not in ["Y","y","Yes","yes","Yea","yea"]:
                 break
+
+        # Second Service is (Withdraw) [Ammar]
+        elif service in ["2", "withdraw", "Withdraw"]:
+
+            # Current Balance
+            oldBalance = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
+            print("Your Balance is:", oldBalance, sep="\n")
+
+            # Amount to be withdrawn 
+            amount = int(input("Enter the amount you want to withdraw:"))
+            DbModule.UpdateBalance((oldBalance - amount), userCard.ID, userCard.accountType)
+
+            # Balance after withdraw
+            newBalance = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
+            print("Your Transaction Done Successfully", "Your balance now is ", newBalance)
+
+            retry = input("Would U like to Use Another Service? Y/N: ")
+            if retry not in ["Y", "y", "Yes", "yes", "Yea", "yea"]:
+                break
+
+
         # Exit point
-        elif service in ["2", "Quit", "quit"]:
+        elif service in ["3", "Quit", "quit"]:
             break
+
         # For invalid entries, display a message, and loop the function.
         else:
             print("Invalid Input, Please choose one of the Avaliable Services")
+
     print("Thank you for Using PyATM")
     print("Card Returned!")
     pass
+
 # Main Function:-
 
 # Selects Card

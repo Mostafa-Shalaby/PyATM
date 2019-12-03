@@ -2,25 +2,29 @@
 import sqlite3
 import os
 
-# Name and Path of the Database File, (Since there is no path, it will be root of the project!)
+# Name and Path of the Database File, (Since there is no path, it will be in the root of the project!)
 DbFile = "PyATM.db"
 
 def CreateConnection():
     # Method Description:
     """ Create a Connection to the Database File """
+
     # If the database file does not exist, it calls CreateDatabase function!
-    if not os.path.exists("PyATM.db"): 
+    if not os.path.exists(DbFile): 
         CreateDatabase()
         PopulateDatabase()
+
     # Initializes and Returns a Database Connection
     return sqlite3.connect(DbFile)
 
 def CreateDatabase():
     # Method Description:
     """ Create a Database File and Structures its Tables """
+    
     # Initializes Both a Connection (Which will create the file), Then a Cursor (Which manipulates the file)
     dbConnection = sqlite3.connect(DbFile)
     cur = dbConnection.cursor()
+
     # Executes the SQL statements.
     cur.execute(
         """ 
@@ -33,8 +37,10 @@ def CreateDatabase():
         currencytype TEXT);
         """
     )
+
     # Commits/Saves the changes to the database
     dbConnection.commit()
+
     # Closes Both the unused Connection and Cursor
     cur.close()
     dbConnection.close()
@@ -46,6 +52,7 @@ def PopulateDatabase():
     # Initializes Connection and Cursor
     dbConnection = sqlite3.connect(DbFile)
     cur = dbConnection.cursor()
+
     # Populates the Account Table With Few Presets Data.
     cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (123456, 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
     cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (234567, 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
@@ -53,8 +60,10 @@ def PopulateDatabase():
     cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (456789, 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
     cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (567890, 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
     cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (123456, 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
+    
     # Commits/Saves the changes to the database
     dbConnection.commit()
+    
     # Closes Both the unused Connection and Cursor
     cur.close()
     dbConnection.close()
@@ -63,6 +72,7 @@ def PopulateDatabase():
 def BalanceCheck(userID, accountType):
     # Method Description:
     """ Checks the balance of the given user's account """
+    
     # Initializes Connection and Cursor
     dbConnection = CreateConnection()
     cur = dbConnection.cursor()

@@ -54,12 +54,12 @@ def PopulateDatabase():
     cur = dbConnection.cursor()
 
     # Populates the Account Table With Few Presets Data.
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (123456, 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (234567, 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (345678, 'Osama Khalid', 'Saving', 9000.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (456789, 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (567890, 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES (123456, 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("372995442619905", 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("5504981108311326", 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("4445544517086312", 'Osama Khalid', 'Saving', 9000.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("377557997331297", 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("4445572056242236", 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ("372995442619905", 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
     
     # Commits/Saves the changes to the database
     dbConnection.commit()

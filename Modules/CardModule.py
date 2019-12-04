@@ -43,11 +43,11 @@ class Card:
 
 # A list of instances of cards with some random data for testing.
 PredefinedCards = [
-    Card(123456, 1568, "NBE", "Ahmed Saeed" , "Feb, 2020", accountType="Saving"),
-    Card(234567, 1234, "NBE", "Mohammed Khalid" ,"Feb, 2020"),
-    Card(345678, 8746, "NBE", "Osama Khalid" ,"Feb, 2020", 4, accountType="Saving"),
-    Card(456789, 5648, "NBE", "Hatiem Yasser" ,"Feb, 2020", 2),
-    Card(567890, 1564, "NBE", "Samir Ganim" ,"Feb, 2020", 5, False),
+    Card("372995442619905", 1568, "NBE", "Ahmed Saeed" , "Feb, 2020", accountType="Saving"),
+    Card("5504981108311326", 1234, "NBE", "Mohammed Khalid" ,"Feb, 2020"),
+    Card("4445544517086312", 8746, "NBE", "Osama Khalid" ,"Feb, 2020", 4, accountType="Saving"),
+    Card("377557997331297", 5648, "NBE", "Hatiem Yasser" ,"Feb, 2020", 2),
+    Card("4445572056242236", 1564, "NBE", "Samir Ganim" ,"Feb, 2020", 5, False),
 ]
 
 def SearchCardsByID(searchID):

@@ -61,23 +61,23 @@ def NumPadFrame(parent, inputPin):
     numFrame['bg'] = parent['bg']
     # Initalizes Various Buttons and Puts them in different location in a gird that is auto generated.
     # NumPad Buttons
-    button1=NumPadButton(numFrame, text="1", command=lambda: WritePin("1", inputPin)).grid(row=0,column=0, padx=2, pady=2)
-    button2=NumPadButton(numFrame, text="2", command=lambda: WritePin("2", inputPin)).grid(row=0,column=1, padx=2, pady=2)
-    button3=NumPadButton(numFrame, text="3", command=lambda: WritePin("3", inputPin)).grid(row=0,column=2, padx=2, pady=2)
-    button4=NumPadButton(numFrame, text="4", command=lambda: WritePin("4", inputPin)).grid(row=1,column=0, padx=2, pady=2)
-    button5=NumPadButton(numFrame, text="5", command=lambda: WritePin("5", inputPin)).grid(row=1,column=1, padx=2, pady=2)
-    button6=NumPadButton(numFrame, text="6", command=lambda: WritePin("6", inputPin)).grid(row=1,column=2, padx=2, pady=2)
-    button7=NumPadButton(numFrame, text="7", command=lambda: WritePin("7", inputPin)).grid(row=2,column=0, padx=2, pady=2)
-    button8=NumPadButton(numFrame, text="8", command=lambda: WritePin("8", inputPin)).grid(row=2,column=1, padx=2, pady=2)
-    button9=NumPadButton(numFrame, text="9", command=lambda: WritePin("9", inputPin)).grid(row=2,column=2, padx=2, pady=2)
-    button0=NumPadButton(numFrame, text="0", command=lambda: WritePin("0", inputPin)).grid(row=3,column=1, padx=2, pady=2)
-    buttonP1=NumPadButton(numFrame, width=2).grid(row=3,column=0, padx=2, pady=2)
-    buttonP2=NumPadButton(numFrame, width=2).grid(row=3,column=2, padx=2, pady=2)
+    NumPadButton(numFrame, text="1", command=lambda: WritePin("1", inputPin)).grid(row=0,column=0, padx=2, pady=2)
+    NumPadButton(numFrame, text="2", command=lambda: WritePin("2", inputPin)).grid(row=0,column=1, padx=2, pady=2)
+    NumPadButton(numFrame, text="3", command=lambda: WritePin("3", inputPin)).grid(row=0,column=2, padx=2, pady=2)
+    NumPadButton(numFrame, text="4", command=lambda: WritePin("4", inputPin)).grid(row=1,column=0, padx=2, pady=2)
+    NumPadButton(numFrame, text="5", command=lambda: WritePin("5", inputPin)).grid(row=1,column=1, padx=2, pady=2)
+    NumPadButton(numFrame, text="6", command=lambda: WritePin("6", inputPin)).grid(row=1,column=2, padx=2, pady=2)
+    NumPadButton(numFrame, text="7", command=lambda: WritePin("7", inputPin)).grid(row=2,column=0, padx=2, pady=2)
+    NumPadButton(numFrame, text="8", command=lambda: WritePin("8", inputPin)).grid(row=2,column=1, padx=2, pady=2)
+    NumPadButton(numFrame, text="9", command=lambda: WritePin("9", inputPin)).grid(row=2,column=2, padx=2, pady=2)
+    NumPadButton(numFrame, text="0", command=lambda: WritePin("0", inputPin)).grid(row=3,column=1, padx=2, pady=2)
+    NumPadButton(numFrame, width=2).grid(row=3,column=0, padx=2, pady=2)
+    NumPadButton(numFrame, width=2).grid(row=3,column=2, padx=2, pady=2)
     # Control Buttons On the Side.
-    CancelButton = ControlButton(numFrame, hovercolor="#cc0066", bg="#f6006b", text="Cancel").grid(row=0,column=3, padx=(20,1), pady=1)
-    ClearButton = ControlButton(numFrame, hovercolor="#cc9900", bg="#ffc300", text="Clear", command=lambda: ClearPin(inputPin)).grid(row=1,column=3, padx=(20,1), pady=1)
-    EnterButton = ControlButton(numFrame, hovercolor="#009900", bg="#03d703", text="Enter").grid(row=2,column=3, padx=(20,1), pady=1)
-    BlankButton = ControlButton(numFrame, hovercolor="#2d9de7", bg="#01b4f6", text="").grid(row=3,column=3, padx=(20,1), pady=1)
+    ControlButton(numFrame, hovercolor="#cc0066", bg="#f6006b", text="Cancel").grid(row=0,column=3, padx=(20,1), pady=1)
+    ControlButton(numFrame, hovercolor="#cc9900", bg="#ffc300", text="Clear", command=lambda: ClearPin(inputPin)).grid(row=1,column=3, padx=(20,1), pady=1)
+    ControlButton(numFrame, hovercolor="#009900", bg="#03d703", text="Enter").grid(row=2,column=3, padx=(20,1), pady=1)
+    ControlButton(numFrame, hovercolor="#2d9de7", bg="#01b4f6", text="").grid(row=3,column=3, padx=(20,1), pady=1)
     return numFrame
 
 def PinFrame(parent, inputPin):
@@ -126,5 +126,3 @@ def NumPadWindow():
     NumPadFrame(root, inputPin).grid(row=1, column=0, padx=30, pady=20)
     root.mainloop()
     pass
-
-NumPadWindow()

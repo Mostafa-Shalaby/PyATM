@@ -27,7 +27,3 @@ def GetMinBills(bills, amount):
 		value = value - bill
 		result.append(bill)
 	return result
-
-# Testing Functions
-print("210 =")
-print(GetMinBills([20,50,100,200], 210))

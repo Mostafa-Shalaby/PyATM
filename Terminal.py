@@ -67,12 +67,25 @@ def SelectService(userCard):
         # Second Service is (Withdraw) [Ammar]
         elif service in ["2", "withdraw", "Withdraw"]:
 
-            # Current Balance
-            oldBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
-            print("Your Balance is:", str(oldBalance) + ' ' + currency, sep="\n")
-
             # Amount to be withdrawn
-            amount = int(input("Enter the amount you want to withdraw: "))
+            # Enter a loop until a valid amount is entered
+            while(True):
+                amount = int(input("Enter the amount you want to withdraw: "))
+                if amount > 0: break
+
+            # Check if the client has enough amount in balance
+            oldBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
+
+            # If the amount > oldBalance enter a loop until a valid amount is entered
+            while(True):
+                if amount > oldBalance or amount < 0:
+                    if amount > oldBalance:
+                        print("Sorry, not enough cash in your balance, " + str(oldBalance) + ' ' + currency + "! Please, try again!")
+                    amount = int(input("Enter the amount you want to withdraw: "))
+                else:
+                    break
+
+            # Deduct the amount from the balance in the database
             DbModule.UpdateBalance((oldBalance - amount), userCard.ID, userCard.accountType)
 
             # Balance after withdraw
@@ -86,12 +99,14 @@ def SelectService(userCard):
         # Third service is deposit
         elif service in ["3", "deposit", "Deposit"]:
 
-            # Current Balance
-            oldBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
-            print("Your Balance is:", str(oldBalance) + ' ' + currency, sep="\n")
-
             # Amount to be deposited
-            amount = int(input("Enter the amount you want to deposit: "))
+            # Enter a loop until a valid amount is entered
+            while(True):
+                amount = int(input("Enter the amount you want to deposit: "))
+                if amount > 0: break
+
+            # Add the amount to the balance in the database
+            oldBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
             DbModule.UpdateBalance((oldBalance + amount), userCard.ID, userCard.accountType)
 
             # Balance after depositing

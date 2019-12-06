@@ -30,11 +30,25 @@ def CreateDatabase():
         """
         CREATE TABLE IF NOT EXISTS Account(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        userid TEXT,
+        cardid TEXT,
         username TEXT,
         accounttype TEXT,
         balance REAL,
         currencytype TEXT);
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Transactions(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid INTEGER,
+        cardid TEXT,
+        TYPE TEXT,
+        amount INTEGER,
+        currencytype TEXT,
+        occurrence NUMERIC DEFAULT CURRENT_DATETIME,
+        FOREIGN KEY (cardid)
+            REFERENCES Account (id));
         """
     )
 
@@ -54,12 +68,12 @@ def PopulateDatabase():
     cur = dbConnection.cursor()
 
     # Populates the Account Table With Few Presets Data.
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('5504981108311326', 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('4445544517086312', 'Osama Khalid', 'Saving', 9000.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('377557997331297', 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('4445572056242236', 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
-    cur.execute("INSERT INTO Account (userid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('5504981108311326', 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('4445544517086312', 'Osama Khalid', 'Saving', 9000.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('377557997331297', 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('4445572056242236', 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
+    cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
 
     # Commits/Saves the changes to the database
     dbConnection.commit()
@@ -69,15 +83,15 @@ def PopulateDatabase():
     dbConnection.close()
     pass
 
-def BalanceCheck(userID, accountType):
+def BalanceCheck(cardid, accountType):
     # Method Description:
     """ Checks the balance of the given user's account """
 
     # Initializes Connection and Cursor
     dbConnection = CreateConnection()
     cur = dbConnection.cursor()
-    # Gets the balance of the user with the use of the his userID (ID on his card), and accountType
-    cur.execute("SELECT balance, currencytype FROM Account WHERE userid = ? AND accounttype = ?", (userID, accountType))
+    # Gets the balance of the user with the use of the his cardid (ID on his card), and accountType
+    cur.execute("SELECT balance, currencytype FROM Account WHERE cardid = ? AND accounttype = ?", (cardid, accountType))
     # The query returns a tuple containing an integer representing the balance and a string representing the currency type
     balance, currency = cur.fetchone()
     # Closes Both the unused Connection and Cursor
@@ -85,14 +99,14 @@ def BalanceCheck(userID, accountType):
     dbConnection.close()
     return balance, currency
 
-def UpdateBalance(newBalance, userID, accountType):
+def UpdateBalance(newBalance, cardid, accountType):
     # Method Description:
     """ Updates the balance of the given user's account """
     # Initializes Connection and Cursor
     dbConnection = CreateConnection()
     cur = dbConnection.cursor()
-    # Update the balance to the new value using 3 variables, newBalance, userID and accountType
-    cur.execute("UPDATE Account SET balance = ? WHERE userid = ? AND accounttype = ?", (newBalance, userID, accountType))
+    # Update the balance to the new value using 3 variables, newBalance, cardid and accountType
+    cur.execute("UPDATE Account SET balance = ? WHERE cardid = ? AND accounttype = ?", (newBalance, cardid, accountType))
     # Commits/Saves the changes to the database
     dbConnection.commit()
     # Closes Both the unused Connection and Cursor

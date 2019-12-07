@@ -11,13 +11,15 @@ class PinPage(Frame):
         # Creates Few Properties to Manipulate the Interface
         self.InputPin = StringVar()
         self.SelectedCard = "Unknown"
-        self.IsValidPin = "Unknown"
+        self.IsValidPin = BooleanVar()
         self.background = parent['bg']
 
         # Populates The Frame With A NumPad and TextBox Entering Pin With Instruction Message.
         Label(self,text="Please enter your PIN.",font=("Segoe UI",18),fg="#f1f1f1",bg=self.background).pack(pady=(0,5))
-        self.PinTextBox().pack(expand=1, fill=X)
-        self.NumPad().pack(pady=(20,0))
+        self.PinTextBox().pack(expand=1, fill=X, padx=2)
+        self.NumPad().pack(pady=(8,0))
+        self.StatusMessage = Label(self,text="",font=("Segoe UI",12),fg="#ffd400",bg=self.background)
+        self.StatusMessage.pack(pady=(5,0))
 
     def NumPad(self):
         # Method Description:
@@ -39,9 +41,7 @@ class PinPage(Frame):
         NumPadButton(padFrame, text="0", command=lambda: self.WritePin("0")).grid(row=3,column=1, padx=2, pady=2)
         # Control Buttons On the Side.
         ControlButton(padFrame,bg="#00b300",hbg="#00cc00",abg="#008000",text="Enter", command=lambda: self.EnterPin()).grid(row=3,column=0, padx=2, pady=2)
-        ControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=lambda: self.ClearPin()).grid(row=3,column=2, padx=2, pady=2)
-        
-        # ControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042", text="Cancel").grid(row=0,column=3, padx=(20,1), pady=1)
+        ControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=lambda: self.ClearPin()).grid(row=3,column=2, padx=2, pady=2)     
         return padFrame    
     
     def PinTextBox(self):
@@ -71,8 +71,20 @@ class PinPage(Frame):
         self.InputPin.set("")
     
     def EnterPin(self):
-        print(self.SelectedCard.ID)
-        pass
+        try:
+            pin = int(self.InputPin.get())
+            if self.SelectedCard.CheckPin(pin):
+                self.pack_forget()
+                print("Welcome To PyATM")
+            else:
+                if (self.SelectedCard.ErrorCounter < 5):
+                    self.StatusMessage.config(text="Incorrect Pin!, Remaining Retries: "+str(5-self.SelectedCard.ErrorCounter))
+                else:
+                    self.IsValidPin.set(False)
+                    self.pack_forget()
+                    print("Pin has been entered incorrectly too many times, Card deactivated!")
+            self.ClearPin()
+        except: pass
 
     def GetCard(self, card):
         self.SelectedCard = card

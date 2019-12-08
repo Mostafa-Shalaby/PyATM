@@ -1,32 +1,34 @@
 #Import Modules
 from tkinter import *
+from pathlib import Path
 
 class PinPage(Frame):
     # Class Description
     """Creates a Frame with NumPad and A Textbox to hold a Pin Number """
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, card, *args, **kwargs):
         # Initalizes a frame with the give parameters of the constructor
         Frame.__init__(self, parent, bg=parent['bg'], *args, **kwargs)
 
         # Creates Few Properties to Manipulate the Interface
         self.InputPin = StringVar()
-        self.SelectedCard = "Unknown"
-        self.IsValidPin = BooleanVar()
-        self.background = parent['bg']
+        self.SelectedCard = card
+        self.Background = parent['bg']
+        self.Parent = parent
 
         # Populates The Frame With A NumPad and TextBox Entering Pin With Instruction Message.
-        Label(self,text="Please enter your PIN.",font=("Segoe UI",18),fg="#f1f1f1",bg=self.background).pack(pady=(0,5))
+        self.Photo = PhotoImage(file=Path(__file__).parent / "Assets/Message4.png")
+        Label(self, image=self.Photo, bg=self.Background).pack()
         self.PinTextBox().pack(expand=1, fill=X, padx=2)
         self.NumPad().pack(pady=(8,0))
-        self.StatusMessage = Label(self,text="",font=("Segoe UI",12),fg="#ffd400",bg=self.background)
+        self.StatusMessage = Label(self,text="",font=("Segoe UI",12,'bold'),fg="#ffd400",bg=self.Background)
         self.StatusMessage.pack(pady=(5,0))
 
     def NumPad(self):
         # Method Description:
         """Creates a Frame and populates it with Numbered Buttons"""
 
-        # Create a Frame to hold the various controls/buttons and sets its background.
-        padFrame = Frame(self, bg=self.background)
+        # Create a Frame to hold the various controls/buttons and sets its Background.
+        padFrame = Frame(self, bg=self.Background)
 
         # Initalizes NumPad Buttons and Puts them in different location in a Gird that is auto generated.
         NumPadButton(padFrame, text="1", command=lambda: self.WritePin("1")).grid(row=0,column=0, padx=2, pady=2)
@@ -48,7 +50,7 @@ class PinPage(Frame):
         # Method Description
         """Create The Frame and Textbox to Hold the pin."""
 
-        # Create a Frame to hold the various controls/buttons and sets its background.
+        # Create a Frame to hold the various controls/buttons and sets its Background.
         pinFrame = Frame(self, bg="#333")
         
         # Initalizes an Entry Widget(TextBox) (That Will Show * Instead of The actual Value)
@@ -71,23 +73,19 @@ class PinPage(Frame):
         self.InputPin.set("")
     
     def EnterPin(self):
+        # Method Description
+        """Checks the Entered PIN Pin Value written in the Button"""
         try:
             pin = int(self.InputPin.get())
             if self.SelectedCard.CheckPin(pin):
-                self.pack_forget()
-                print("Welcome To PyATM")
+                self.Parent.OpenServicePage()
             else:
                 if (self.SelectedCard.ErrorCounter < 5):
-                    self.StatusMessage.config(text="Incorrect Pin!, Remaining Retries: "+str(5-self.SelectedCard.ErrorCounter))
+                    self.StatusMessage.config(text="Incorrect Pin, Remaining Retries: "+str(5-self.SelectedCard.ErrorCounter))
                 else:
-                    self.IsValidPin.set(False)
-                    self.pack_forget()
-                    print("Pin has been entered incorrectly too many times, Card deactivated!")
+                    self.Parent.ReturnCard("Invalid")
             self.ClearPin()
         except: pass
-
-    def GetCard(self, card):
-        self.SelectedCard = card
 
     def KeyChecker(self,P,d,s):
         # Method Description
@@ -110,7 +108,7 @@ class NumPadButton(Button):
         self['width'] = 3
         self['padx'] = 21
         self['pady'] = 10
-        self['font'] = ("Segoe UI", 16, "bold")
+        self['font'] = ("Calibri", 18, "bold")
         self['border'] = 0
         self['bg']="#0077cc"
         self['fg']="#f1f1f1"
@@ -135,7 +133,7 @@ class ControlButton (Button):
         self['width'] = 3
         self['padx'] = 21
         self['pady'] = 10
-        self['font'] = ("Segoe UI", 16, "bold")
+        self['font'] = ("Calibri", 18, "bold")
         self['border'] = 0
         self['fg']="#f1f1f1"
         self['activebackground'] = abg

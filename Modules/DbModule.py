@@ -41,12 +41,12 @@ def CreateDatabase():
         """
         CREATE TABLE IF NOT EXISTS Transactions(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        userid INTEGER,
-        cardid TEXT,
-        TYPE TEXT,
+        userid INTEGER NOT NULL,
+        cardid TEXT NOT NULL,
+        type TEXT NOT NULL,
         amount INTEGER,
         currencytype TEXT,
-        occurrence NUMERIC DEFAULT CURRENT_DATETIME,
+        occurrence NUMERIC DEFAULT (datetime('now', 'localtime')),
         FOREIGN KEY (cardid)
             REFERENCES Account (id));
         """
@@ -67,13 +67,20 @@ def PopulateDatabase():
     dbConnection = sqlite3.connect(DbFile)
     cur = dbConnection.cursor()
 
-    # Populates the Account Table With Few Presets Data.
+    # Populates the Account Table With Few Preset Data.
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Saving', 6589.00, 'L.E.');")
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('5504981108311326', 'Mohammed Khalid', 'Checking', 51000.00, 'L.E.');")
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('4445544517086312', 'Osama Khalid', 'Saving', 9000.00, 'L.E.');")
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('377557997331297', 'Hatiem Yasser', 'Checking', 289.00, 'L.E.');")
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('4445572056242236', 'Samir Ganim', 'Saving', 7900.00, 'L.E.');")
     cur.execute("INSERT INTO Account (cardid, username, accounttype, balance, currencytype) VALUES ('372995442619905', 'Ahmed Saeed', 'Checking', 500.00, 'L.E.');")
+
+    # Populates the Transactions Table With Few Preset Data.
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (1, '372995442619905', 'withdraw', 5000, 'L.E.')")
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (1, '372995442619905', 'deposit', 9500, 'L.E.')")
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (4, '377557997331297', 'withdraw', 750, 'L.E.')")
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (1, '372995442619905', 'withdraw', 2911, 'L.E.')")
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (5, '4445572056242236', 'deposit', 7900, 'L.E.')")
 
     # Commits/Saves the changes to the database
     dbConnection.commit()
@@ -113,3 +120,49 @@ def UpdateBalance(newBalance, cardid, accountType):
     cur.close()
     dbConnection.close()
     pass
+
+def RecordTrans(cardid, accountType, type, amount):
+    # Method Description:
+    """ Records the transaction in the database """
+    # Initializes Connection and Cursor
+    dbConnection = CreateConnection()
+    cur = dbConnection.cursor()
+    # Get the user's id and currencytype
+    cur.execute("SELECT id, currencytype FROM Account WHERE cardid = ? AND accounttype = ?", (cardid, accountType))
+    id, currency = cur.fetchone()
+    # Insert the transaction into the database
+    cur.execute("INSERT INTO Transactions (userid, cardid, type, amount, currencytype) VALUES (?, ?, ?, ?, ?)", (id, cardid, type, amount, currency))
+    # Commits/Saves the changes to the database
+    dbConnection.commit()
+    # Closes Both the unused Connection and Cursor
+    cur.close()
+    dbConnection.close()
+    pass
+
+#RecordTrans('377557997331297', 'Checking', 'deposit', 220)
+
+def TransCheck(cardid, accountType):
+    # Method Description:
+    """ Checks the transaction history of an account """
+    # Initializes Connection and Cursor
+    dbConnection = CreateConnection()
+    cur = dbConnection.cursor()
+    # Get the user's id and currencytype
+    cur.execute("SELECT id, currencytype FROM Account WHERE cardid = ? AND accounttype = ?", (cardid, accountType))
+    id, currency = cur.fetchone()
+    # Retrieve the transaction history from the database
+    cur.execute("SELECT type, amount, occurrence FROM Transactions t INNER JOIN Account a ON a.id = t.userid WHERE userid = ? ORDER BY occurrence DESC;", (id, ))
+    # Store the matching rows in a dictionary
+    matches = cur.fetchall()
+    result = []
+    for match in matches:
+        d = {'occurrence': match[2],
+             'amount': match[1],
+             'type': match[0]}
+        result.append(d)
+    # Commits/Saves the changes to the database
+    dbConnection.commit()
+    # Closes Both the unused Connection and Cursor
+    cur.close()
+    dbConnection.close()
+    return result

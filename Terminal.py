@@ -57,7 +57,7 @@ def SelectService(userCard):
 
     # Endless Loop For User To Select a Service
     while(True):
-        print("Avaliable Services Are:", "1. Check Balance", "2. Withdraw", "3. Deposit", "4. Quit", sep="\n")
+        print("Avaliable Services Are:", "1. Check Balance", "2. Withdraw", "3. Deposit", "4. Transaction History", "5. Quit", sep="\n")
         service = input("Which Service would u like to use: ")
 
         # First Service Avaliable is (Checking Balance)
@@ -92,6 +92,9 @@ def SelectService(userCard):
             # Deduct the amount from the balance in the database
             DbModule.UpdateBalance((oldBalance - amount), userCard.ID, userCard.accountType)
 
+            # Record the transaction
+            DbModule.RecordTrans(userCard.ID, userCard.accountType, 'withdraw', amount)
+
             # Balance after withdraw
             newBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
             print("Your Transaction Done Successfully!", "Your balance now is ", str(newBalance) + ' ' + currency, sep='\n')
@@ -119,6 +122,9 @@ def SelectService(userCard):
             oldBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
             DbModule.UpdateBalance((oldBalance + amount), userCard.ID, userCard.accountType)
 
+            # Record the transaction
+            DbModule.RecordTrans(userCard.ID, userCard.accountType, 'deposit', amount)
+
             # Balance after depositing
             newBalance, currency = DbModule.BalanceCheck(userCard.ID, userCard.accountType)
             print("Your Transaction Done Successfully!", "Your balance now is ", str(newBalance) + ' ' + currency, sep='\n')
@@ -127,8 +133,17 @@ def SelectService(userCard):
             if retry not in ["Y", "y", "Yes", "yes", "Yea", "yea"]:
                 break
 
+        # Fourth service is Transaction history
+        elif service in ["4", "Transaction History", "transaction history", "History", "history", "Transaction", "transaction"]:
+            # Retrieve the transaction history from the database
+            trans = DbModule.TransCheck(userCard.ID, userCard.accountType)
+
+            # Print the transaction history
+            for log in trans:
+                print(log)
+
         # Exit point
-        elif service in ["4", "Quit", "quit"]:
+        elif service in ["5", "Quit", "quit"]:
             break
 
         # For invalid entries, display a message, and loop the function.

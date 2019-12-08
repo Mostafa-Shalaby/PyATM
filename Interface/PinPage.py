@@ -78,7 +78,7 @@ class PinPage(Frame):
         try:
             pin = int(self.InputPin.get())
             if self.SelectedCard.CheckPin(pin):
-                self.Parent.OpenServicePage()
+                self.Parent.OpenServicePage(self.SelectedCard)
             else:
                 if (self.SelectedCard.ErrorCounter < 5):
                     self.StatusMessage.config(text="Incorrect Pin, Remaining Retries: "+str(5-self.SelectedCard.ErrorCounter))
@@ -113,7 +113,7 @@ class NumPadButton(Button):
         self['bg']="#0077cc"
         self['fg']="#f1f1f1"
         self['activebackground'] = "#2257bf"
-        self['activeforeground'] = "#004a80"
+        self['activeforeground'] = "#afafaf"
         # Binds the hover over events to a set of functions
         self.bind("<Enter>", self.OnEnter)
         self.bind("<Leave>", self.OnLeave)

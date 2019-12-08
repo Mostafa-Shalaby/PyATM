@@ -57,30 +57,30 @@ class Window(Tk):
         # Method Description
         """Switches to Pin Page If Card is valid, else returns card"""
         if PredefinedCards[cardIndex].IsValid:
-            self.ReturnButton.pack(side=TOP, padx=(890,0), pady=(30,0))
+            self.ReturnButton.pack(side=TOP, padx=(870,20), pady=(30,0))
             self.CurrentPage.destroy()
             self.CurrentPage=PinPage(self, PredefinedCards[cardIndex])
             self.CurrentPage.pack(side=TOP, pady=(45,0))
         else :
             self.ReturnCard("Invalid")
 
-    def OpenServicePage(self):
+    def OpenServicePage(self,selectedCard):
         # Method Description
         """Switches to the Service Page"""
         self.CurrentPage.destroy()
-        self.CurrentPage=ServicePage(self)
-        self.CurrentPage.pack(side=TOP)
+        self.CurrentPage=ServicePage(self,selectedCard)
+        self.CurrentPage.pack(side=TOP, pady=(45,0))
 
 class ReturnCardButton(Button):
      # Class Description
-    """Stylized Buttons For Use In ATM Pin Controls"""
+    """Stylized Buttons For Use As a Return Card Control"""
     def __init__(self, parent, *args, **kwargs):
         # Initalizes A Button, and Hard Codes Few Styles.
         Button.__init__(self, parent, *args, **kwargs)
         self['border'] = 0
         self['fg']="#f1f1f1"
         self['activebackground'] = "#004373"
-        self['activeforeground'] = "#72a3ff"
+        self['activeforeground'] = "#afafaf"
         self['bg'] = "#0c3b97"
         self.photo = PhotoImage(file=Path(__file__).parent / "Assets/CustomButton2.png")    
         self.config(image=self.photo, compound = LEFT)

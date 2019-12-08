@@ -52,7 +52,7 @@ class CardPage(Frame):
 # Hardcoded Stylized Widgets: (Subclass of Existing Widgets)
 class CardButton(Button):
      # Class Description
-    """Stylized Buttons For Use In ATM Pin Controls"""
+    """Stylized Buttons For Use In ATM Card Selection Controls"""
     def __init__(self, parent, *args, **kwargs):
         # Initalizes A Button, and Hard Codes Few Styles.
         Button.__init__(self, parent, *args, **kwargs)
@@ -63,7 +63,7 @@ class CardButton(Button):
         self['border'] = 0
         self['fg']="#f1f1f1"
         self['activebackground'] = "#004373"
-        self['activeforeground'] = "#72a3ff"
+        self['activeforeground'] = "#afafaf"
         self['bg'] = "#0066ae"
         self.photo = PhotoImage(file=Path(__file__).parent / "Assets/CustomButton1.png")  
         self.config(image=self.photo, compound = LEFT)

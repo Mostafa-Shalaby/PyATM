@@ -4,7 +4,7 @@ import Modules.DbModule as DbModule
 import Modules.CalculationModule as CalculationModule
 
 # A dictionary for available bills and their count in PyATM {bill: bill_count}
-bills = {20: 200, 50: 150, 100: 100, 200: 50}
+bills = {20: 800, 50: 320, 100: 160, 200: 80}
 
 def SelectCard():
     # Method Description:
@@ -70,7 +70,7 @@ def SelectService(userCard):
 
         # Second Service is (Withdraw) [Ammar]
         elif service in ["2", "withdraw", "Withdraw"]:
-
+            global bills
             # Amount to be withdrawn
             # Enter a loop until a valid amount is entered
             while(True):
@@ -100,10 +100,9 @@ def SelectService(userCard):
             print("Your Transaction Done Successfully!", "Your balance now is ", str(newBalance) + ' ' + currency, sep='\n')
 
             # Eject cash
-            amount_bills = CalculationModule.GetMinBills([bill for bill in bills], amount)
-            for bill in bills:
-                bill_count = amount_bills.count(bill)
-                print(bill, bill_count, sep=' ==> ')
+            bills, amount_bills = CalculationModule.GetBills(bills, amount)
+            for bill, billCount in amount_bills.items():
+                print(bill, billCount, sep=' ==> ')
 
             retry = input("Would U like to Use Another Service? Y/N: ")
             if retry not in ["Y", "y", "Yes", "yes", "Yea", "yea"]:

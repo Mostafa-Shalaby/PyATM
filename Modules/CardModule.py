@@ -37,7 +37,7 @@ class Card:
         # if the pin is incorrect, increase the error counter and makes the card invalid if entered 5 times incorrectly
         else:
           self.ErrorCounter += 1
-          if self.ErrorCounter > 5:
+          if self.ErrorCounter == 5:
             self.IsValid = False
           return False
 

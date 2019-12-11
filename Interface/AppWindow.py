@@ -20,7 +20,7 @@ class Window(Tk):
         self.minsize(self.width, self.height)
 
         #Sets Few attributes about the Window
-        self.title = "PyATM"
+        self.title('PyATM')
         self['bg'] = "#0c3b97"
 
         # Set adds a background Image.
@@ -69,7 +69,7 @@ class Window(Tk):
         """Switches to the Service Page"""
         self.CurrentPage.destroy()
         self.CurrentPage=ServicePage(self,selectedCard)
-        self.CurrentPage.pack(side=TOP, pady=(45,0))
+        self.CurrentPage.pack(side=TOP, pady=(55,0))
 
 class ReturnCardButton(Button):
      # Class Description

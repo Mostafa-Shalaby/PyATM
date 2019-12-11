@@ -49,11 +49,10 @@ class ServicePage(Frame):
         """First Service Avaliable is (Checking Balance)"""
         # Puts a title for the deposit to be displayed as text by UI elements.
         withdrawTitle=self.SelectedCard.accountType+" Account's Withdraw:"
-
         # Hids the Service Options Selector.
         self.Selector.pack_forget()
 
-        # Create a Frame to hold the balance and populates it with Two Labels.
+        # Create a Frame to hold a title.
         self.CurrentService = withdrawFrame = Frame(self,bg=self.Background)
         TitleLabel(withdrawFrame,text=withdrawTitle).pack(anchor=W)
         # Creates a button to go back to service selector.
@@ -65,11 +64,10 @@ class ServicePage(Frame):
         """First Service Avaliable is (Checking Balance)"""
         # Puts a title for the deposit to be displayed as text by UI elements.
         depositTitle=self.SelectedCard.accountType+" Account's Deposit:"
-
         # Hids the Service Options Selector.
         self.Selector.pack_forget()
 
-        # Create a Frame to hold the balance and populates it with Two Labels.
+        # Create a Frame to hold a title.
         self.CurrentService = depositFrame = Frame(self,bg=self.Background)
         TitleLabel(depositFrame,text=depositTitle).pack(anchor=W)
         # Creates a button to go back to service selector.
@@ -88,7 +86,7 @@ class ServicePage(Frame):
         # Hids the Service Options Selector.
         self.Selector.pack_forget()
 
-        # Create a Frame to hold the balance and populates it with Two Labels.
+        # Create a Frame to hold a title and a list of labels each holding a transcation info.
         self.CurrentService = balanceFrame = Frame(self,bg=self.Background)
         TitleLabel(balanceFrame,text=balanceTitle).pack(anchor=W)
         Label(balanceFrame,text=balanceString,font=("Calibri",28),bg="#0c3b97",fg="#1a96dc").pack(anchor=W)
@@ -118,7 +116,7 @@ class ServicePage(Frame):
     def SwitchService(self,parent):
         # Method Description:
         """Creates a Frame and populates it with Services Selection Buttons"""
-        # Create a Frame to a set of buttons that selects various ATM services.
+        # Create a Frame that holds two buttons to select another service or return card.
         switchFrame = Frame(parent, bg=self.Background)
         SwitchButton(switchFrame,bg="#e5ac00",hbg="#ffbf00",abg="#bf8f00",text="Select Another Service",command=self.BackToSelector).grid(row=0,column=0,padx=(0,10))
         SwitchButton(switchFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Return Card",command=self.Parent.ReturnCard).grid(row=0,column=1,padx=(10,0))

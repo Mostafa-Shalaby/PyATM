@@ -1,6 +1,7 @@
 #Import Modules
 from tkinter import *
 from pathlib import Path
+from Interface.AppStyles import CardButton
 
 class CardPage(Frame):
     # Class Description
@@ -48,31 +49,3 @@ class CardPage(Frame):
         """Opens PinPage When A Card Is Selected"""
         if self.CardIndex.get() in (0,1,2,3,4):
             self.Parent.OpenPinPage(self.CardIndex.get())
-
-# Hardcoded Stylized Widgets: (Subclass of Existing Widgets)
-class CardButton(Button):
-     # Class Description
-    """Stylized Buttons For Use In ATM Card Selection Controls"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 144
-        self['padx'] = 3
-        self['pady'] = 8
-        self['font'] = ("Calibri", 17, "bold")
-        self['border'] = 0
-        self['fg']="#f1f1f1"
-        self['activebackground'] = "#004373"
-        self['activeforeground'] = "#afafaf"
-        self['bg'] = "#0066ae"
-        self.photo = PhotoImage(file=Path(__file__).parent / "Assets/CustomButton1.png")  
-        self.config(image=self.photo, compound = LEFT)
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#0077cc"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#0066ae"

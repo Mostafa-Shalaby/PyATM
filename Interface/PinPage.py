@@ -1,6 +1,7 @@
 #Import Modules
 from tkinter import *
 from pathlib import Path
+from Interface.AppStyles import PinPadButton, PinControlButton
 
 class PinPage(Frame):
     # Class Description
@@ -31,19 +32,19 @@ class PinPage(Frame):
         padFrame = Frame(self, bg=self.Background)
 
         # Initalizes NumPad Buttons and Puts them in different location in a Gird that is auto generated.
-        NumPadButton(padFrame, text="1", command=lambda: self.WritePin("1")).grid(row=0,column=0, padx=2, pady=2)
-        NumPadButton(padFrame, text="2", command=lambda: self.WritePin("2")).grid(row=0,column=1, padx=2, pady=2)
-        NumPadButton(padFrame, text="3", command=lambda: self.WritePin("3")).grid(row=0,column=2, padx=2, pady=2)
-        NumPadButton(padFrame, text="4", command=lambda: self.WritePin("4")).grid(row=1,column=0, padx=2, pady=2)
-        NumPadButton(padFrame, text="5", command=lambda: self.WritePin("5")).grid(row=1,column=1, padx=2, pady=2)
-        NumPadButton(padFrame, text="6", command=lambda: self.WritePin("6")).grid(row=1,column=2, padx=2, pady=2)
-        NumPadButton(padFrame, text="7", command=lambda: self.WritePin("7")).grid(row=2,column=0, padx=2, pady=2)
-        NumPadButton(padFrame, text="8", command=lambda: self.WritePin("8")).grid(row=2,column=1, padx=2, pady=2)
-        NumPadButton(padFrame, text="9", command=lambda: self.WritePin("9")).grid(row=2,column=2, padx=2, pady=2)
-        NumPadButton(padFrame, text="0", command=lambda: self.WritePin("0")).grid(row=3,column=1, padx=2, pady=2)
+        PinPadButton(padFrame, text="1", command=lambda: self.WritePin("1")).grid(row=0,column=0, padx=2, pady=2)
+        PinPadButton(padFrame, text="2", command=lambda: self.WritePin("2")).grid(row=0,column=1, padx=2, pady=2)
+        PinPadButton(padFrame, text="3", command=lambda: self.WritePin("3")).grid(row=0,column=2, padx=2, pady=2)
+        PinPadButton(padFrame, text="4", command=lambda: self.WritePin("4")).grid(row=1,column=0, padx=2, pady=2)
+        PinPadButton(padFrame, text="5", command=lambda: self.WritePin("5")).grid(row=1,column=1, padx=2, pady=2)
+        PinPadButton(padFrame, text="6", command=lambda: self.WritePin("6")).grid(row=1,column=2, padx=2, pady=2)
+        PinPadButton(padFrame, text="7", command=lambda: self.WritePin("7")).grid(row=2,column=0, padx=2, pady=2)
+        PinPadButton(padFrame, text="8", command=lambda: self.WritePin("8")).grid(row=2,column=1, padx=2, pady=2)
+        PinPadButton(padFrame, text="9", command=lambda: self.WritePin("9")).grid(row=2,column=2, padx=2, pady=2)
+        PinPadButton(padFrame, text="0", command=lambda: self.WritePin("0")).grid(row=3,column=1, padx=2, pady=2)
         # Control Buttons On the Side.
-        ControlButton(padFrame,bg="#00b300",hbg="#00cc00",abg="#008000",text="Enter", command=lambda: self.EnterPin()).grid(row=3,column=0, padx=2, pady=2)
-        ControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=lambda: self.ClearPin()).grid(row=3,column=2, padx=2, pady=2)     
+        PinControlButton(padFrame,bg="#00b300",hbg="#00cc00",abg="#008000",text="Enter", command=lambda: self.EnterPin()).grid(row=3,column=0, padx=2, pady=2)
+        PinControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=lambda: self.ClearPin()).grid(row=3,column=2, padx=2, pady=2)     
         return padFrame    
     
     def PinTextBox(self):
@@ -96,56 +97,3 @@ class PinPage(Frame):
             if not (P.isdigit() and len(s) < 4):
                 return False
         return True
-    
-
-# Hardcoded Stylized Widgets: (Subclass of Existing Widgets)
-class NumPadButton(Button):
-    # Class Description
-    """Stylized Buttons For Use In A NumPads"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 3
-        self['padx'] = 21
-        self['pady'] = 10
-        self['font'] = ("Calibri", 18, "bold")
-        self['border'] = 0
-        self['bg']="#0077cc"
-        self['fg']="#f1f1f1"
-        self['activebackground'] = "#2257bf"
-        self['activeforeground'] = "#afafaf"
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#0095ff"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#0077cc"
-
-class ControlButton (Button):
-    # Class Description
-    """Stylized Buttons For Use In ATM Pin Controls"""
-    def __init__(self, parent, hbg, abg, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 3
-        self['padx'] = 21
-        self['pady'] = 10
-        self['font'] = ("Calibri", 18, "bold")
-        self['border'] = 0
-        self['fg']="#f1f1f1"
-        self['activebackground'] = abg
-        self['activeforeground'] = "#afafaf"
-        self.Background = self['bg']
-        self.HoverColor = hbg
-        # Binds the hover over events to `a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = self.HoverColor
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = self.Background

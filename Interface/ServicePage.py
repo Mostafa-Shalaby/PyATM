@@ -1,6 +1,7 @@
 from tkinter import *
 from pathlib import Path
 from Modules import DbModule
+from Interface.AppStyles import *
 
 class ServicePage(Frame):
     # Class Description
@@ -59,7 +60,8 @@ class ServicePage(Frame):
         ServiceButton(selectorFrame,text="Deposit",command=self.DepositService).grid(row=1,column=1,padx=(10,0),pady=(5,10))
         ServiceButton(selectorFrame,text="Balance",command=self.BalanceService).grid(row=2,column=0,padx=(0,10),pady=(10,5))
         ServiceButton(selectorFrame,text="Transactions",command=self.TransactionsService).grid(row=2,column=1,padx=(10,0),pady=(10,5))
-        QuickButton(selectorFrame,text="Quick Cash - 100 L.E.").grid(row=3,column=0,columnspan=2,pady=(25,0),sticky=EW)
+        # Quick Cash Button
+        WithdrawButton(selectorFrame,mode="menu",text="Quick Cash - 100 L.E.").grid(row=3,column=0,columnspan=2,pady=(25,0),sticky=EW)
         return selectorFrame
 
     def WithdrawService(self):
@@ -72,9 +74,9 @@ class ServicePage(Frame):
         # Create a Frame to hold controls.
         self.CurrentService = withdrawFrame = Frame(self,bg=self.Background)
         # Withdraw Title
-        TitleLabel(withdrawFrame,text=withdrawTitle).pack(anchor=W)
+        TitleLabel(withdrawFrame,text=withdrawTitle).grid(row=0,column=0,columnspan=5,sticky=W)
         # Option buttons to go back to service selector.
-        self.SwitchService(withdrawFrame).pack(pady=(25,0))
+        self.SwitchService(withdrawFrame).grid(row=4,column=0,columnspan=6,pady=(25,0))
         withdrawFrame.pack(side=LEFT)
     
     def DepositService(self):
@@ -167,7 +169,6 @@ class ServicePage(Frame):
         # Displays the entire Success Frame and Controls on the screen
         successFrame.pack(side=LEFT)
 
-
     def BillFrame(self,parent,billValue,billImage):
         # Method Description:
         """Creates a Frame and Bill Image and Bill Amount Adjustment Buttons"""
@@ -207,116 +208,3 @@ class ServicePage(Frame):
         self.CurrentService.destroy()
         # Opens and Displays the Service Selector Frame.
         self.Selector.pack(side=LEFT)
-
-
-# Hardcoded Stylized Widgets: (Subclass of Existing Widgets)
-class ServiceButton(Button):
-     # Class Description
-    """Stylized Buttons For Use In ATM Service Selection Controls"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 26
-        self['height'] = 2
-        self['border'] = 0
-        self['font'] = ("Calibri", 19, "bold")
-        self['bg']="#0077cc"
-        self['fg']="#f1f1f1"
-        self['activebackground'] = "#2257bf"
-        self['activeforeground'] = "#afafaf"
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#0095ff"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#0077cc"
-
-class SwitchButton(Button):
-     # Class Description
-    """Stylized Buttons For Use In ATM Service Selection Controls"""
-    def __init__(self, parent, hbg, abg, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 26
-        self['height'] = 1
-        self['border'] = 0
-        self['font'] = ("Calibri", 19, "bold")
-        self['fg']="#f1f1f1"
-        self['activebackground'] = abg
-        self['activeforeground'] = "#afafaf"
-        self.Background = self['bg']
-        self.HoverColor = hbg
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = self.HoverColor
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = self.Background
-
-class QuickButton(Button):
-    # Class Description
-    """Stylized Buttons For Use In ATM Quick Cash Service"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['height'] = 1
-        self['font'] = ("Calibri", 19, "bold")
-        self['border'] = 0
-        self['bg'] = "#e5ac00"
-        self['fg'] = "#f1f1f1"
-        self['activebackground'] = "#bf8f00"
-        self['activeforeground'] = "#afafaf"
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#ffbf00"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#e5ac00"
-
-class DepositButton(Button):
-     # Class Description
-    """Stylized Buttons For Use In ATM Service Selection Controls"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['width'] = 2
-        self['border'] = 0
-        self['font'] = ("Calibri", 19)
-        self['bg']="#0077cc"
-        self['fg']="#f1f1f1"
-        self['activebackground'] = "#2257bf"
-        self['activeforeground'] = "#afafaf"
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#0095ff"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#0077cc"
-
-class TitleLabel(Label):
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Label.__init__(self, parent, *args, **kwargs)
-        self['font'] = ("Calibri", 24, "bold")
-        self['bg'] = "#0c3b97"
-        self['fg'] = "#f1f1f1"
-    
-class DetailsLabel(Label):
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Label.__init__(self, parent, *args, **kwargs)
-        self['font'] = ("Calibri", 18)
-        self['bg'] = "#0c3b97"
-        self['fg'] = "#1a96dc"

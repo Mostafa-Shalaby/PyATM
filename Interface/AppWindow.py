@@ -1,5 +1,6 @@
 from pathlib import Path
 from tkinter import *
+from Interface.AppStyles import ReturnCardButton
 from Interface.CardPage import CardPage
 from Interface.PinPage import PinPage
 from Interface.ThanksPage import ThanksPage
@@ -70,26 +71,3 @@ class Window(Tk):
         self.CurrentPage.destroy()
         self.CurrentPage=ServicePage(self,selectedCard)
         self.CurrentPage.pack(side=TOP, pady=(55,0))
-
-class ReturnCardButton(Button):
-     # Class Description
-    """Stylized Buttons For Use As a Return Card Control"""
-    def __init__(self, parent, *args, **kwargs):
-        # Initalizes A Button, and Hard Codes Few Styles.
-        Button.__init__(self, parent, *args, **kwargs)
-        self['border'] = 0
-        self['fg']="#f1f1f1"
-        self['activebackground'] = "#004373"
-        self['activeforeground'] = "#afafaf"
-        self['bg'] = "#0c3b97"
-        self.photo = PhotoImage(file=Path(__file__).parent / "Assets/CustomButton2.png")    
-        self.config(image=self.photo, compound = LEFT)
-        # Binds the hover over events to a set of functions
-        self.bind("<Enter>", self.OnEnter)
-        self.bind("<Leave>", self.OnLeave)
-    # When Mouse is Over
-    def OnEnter(self, e):
-        self['bg'] = "#0066ae"
-    # When Mouse Leaves
-    def OnLeave(self, e):
-        self['bg'] = "#0c3b97"

@@ -91,7 +91,7 @@ def SelectService(userCard):
 
             bills, amount_bills = CalculationModule.GetBills(bills, amount)
             if not amount_bills:
-                print("We can't process this amount!\n")
+                print("We can't process this amount!")
                 continue
 
             # Deduct the amount from the balance in the database

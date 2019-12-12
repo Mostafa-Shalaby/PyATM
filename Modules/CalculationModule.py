@@ -251,7 +251,7 @@ def BalanceBills(dob, availableBills, billLimits, maxBillCount=maximumBillCount)
 				# Subtract the expendedBills from the dob
 				for bill in dob:
 					dob[bill] -= expendedBills[bill]
-				breaks
+				break
 
 #test_func(1, "BalanceBills", BalanceBills({20: 4, 50: 1, 100: 0, 200: 4}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}), {20: 4, 50: 3, 100: 1, 200: 3})
 #test_func(2, "BalanceBills", BalanceBills({20: 0, 50: 0, 100: 0, 200: 1}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 9, 50: 1, 100: 0, 200: 0}), {20: 0, 50: 0, 100: 0, 200: 1})

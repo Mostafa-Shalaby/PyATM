@@ -89,6 +89,11 @@ def SelectService(userCard):
                 else:
                     break
 
+            bills, amount_bills = CalculationModule.GetBills(bills, amount)
+            if not amount_bills:
+                print("We can't process this amount!\n")
+                continue
+
             # Deduct the amount from the balance in the database
             DbModule.UpdateBalance((oldBalance - amount), userCard.ID, userCard.accountType)
 
@@ -100,7 +105,6 @@ def SelectService(userCard):
             print("Your Transaction Done Successfully!", "Your balance now is ", str(newBalance) + ' ' + currency, sep='\n')
 
             # Eject cash
-            bills, amount_bills = CalculationModule.GetBills(bills, amount)
             for bill, billCount in amount_bills.items():
                 print(bill, billCount, sep=' ==> ')
 

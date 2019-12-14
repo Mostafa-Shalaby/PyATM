@@ -16,6 +16,8 @@ test_func(1, "CountTotalPapers", CalculationModule.CountTotalPapers({20: 12, 50:
 
 
 test_func(1, "BalancingRequirements", CalculationModule.BalancingRequirements({20: 60, 50: 30, 100: 13, 200: 9}), ({20: 0, 50: 6, 100: 1, 200: 3}, 1000))
+test_func(2, "BalancingRequirements", CalculationModule.BalancingRequirements({20: 60, 50: 30, 100: 13, 200: 0}), ({20: 0, 50: 6, 100: 1, 200: 0}, 400))
+test_func(3, "BalancingRequirements", CalculationModule.BalancingRequirements({20: 0, 50: 0, 100: 0, 200: 0}), ({20: 0, 50: 0, 100: 0, 200: 0}, 0))
 
 
 test_func(1, "ValidateCriteria", CalculationModule.ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}), True)
@@ -58,3 +60,4 @@ test_func(3, 'GetBills', CalculationModule.GetBills({20: 60, 50: 30, 100: 13, 20
 test_func(4, 'GetBills', CalculationModule.GetBills({20: 60, 50: 24, 100: 12, 200: 6}, 1200), ({20: 60, 50: 16, 100: 8, 200: 4}, {20: 0, 50: 8, 100: 4, 200: 2}))
 test_func(5, 'GetBills', CalculationModule.GetBills({20: 489, 50: 191, 100: 100, 200: 42}, 5000), ({20: 489, 50: 183, 100: 84, 200: 27}, {20: 0, 50: 8, 100: 16, 200: 15}))
 test_func(6, 'GetBills', CalculationModule.GetBills({20: 24, 50: 8, 100: 3, 200: 0}, 1080), ({20: 5, 50: 0, 100: 0, 200: 0}, {20: 19, 50: 8, 100: 3, 200: 0}))
+test_func(7, 'GetBills', CalculationModule.GetBills({20: 10, 50: 1, 100: 0, 200: 0}, 200), ({20: 0, 50: 1, 100: 0, 200: 0}, {20: 10, 50: 0, 100: 0, 200: 0}))

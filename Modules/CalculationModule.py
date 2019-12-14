@@ -287,6 +287,10 @@ def GetBills(avbills, amount, maxBillCount=maximumBillCount):
 	# Get the min bills solution
 	resultDob = ToDictOfBills(GetMinBills([bill for bill in avbills], amount), [bill for bill in avbills])
 
+	# If GetMinBills can't solve the amount return
+	if CountTotalPapers(resultDob) == 0:
+		return avbills, False
+
 	# Validate that the total paper count of the min solution is <= maxBillCount
 	if not ValidateCriteria(resultDob, maxBillCount=maxBillCount):
 		return avbills, False

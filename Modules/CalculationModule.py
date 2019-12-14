@@ -79,21 +79,27 @@ def CalculateMoneyValue(dob):
 
 # dictOfBills -> perfectAmount
 # Calculates the billLimits and perfectAmount of a given dictOfBills
-# TODO: If the minBillValue is zero ignore it and take the next minBillValue
+
 def BalancingRequirements(dob):
 	# Get the minimum bill value and the max bill in the given dictOfBills
-	minBillValue = min([bill * billCount for bill, billCount in dob.items()])
+	minBillValue = min([bill * billCount if billCount != 0 else float("inf") for bill, billCount in dob.items()])
 	maxBill = max([bill for bill in dob])
-	# Adjust the minimum bill value so that it becomes a multiple of maxBill
-	minBillValue = minBillValue - minBillValue % maxBill
+
 	# Initiate the bill limits and the perfect amount
 	billLimits = {bill: 0 for bill in dob}
 	perfectAmount = 0
+
 	# Get the perfect amount and the bill limit values
-	for bill in billLimits:
-		billLimitValue = int(dob[bill] * bill - minBillValue)
-		perfectAmount += billLimitValue
-		billLimits[bill] = int((billLimitValue) / bill)
+	if minBillValue != float("inf"):
+		# Adjust the minimum bill value so that it becomes a multiple of maxBill
+		minBillValue = minBillValue - minBillValue % maxBill
+
+		# Calculate the bill limits and the perfect amount
+		for bill in billLimits:
+			billLimitValue = int(dob[bill] * bill - minBillValue)
+			billLimitValue = 0 if billLimitValue <= 0 else billLimitValue
+			perfectAmount += billLimitValue
+			billLimits[bill] = int((billLimitValue) / bill)
 	return billLimits, perfectAmount
 
 
@@ -278,30 +284,38 @@ def BalancePapers(dob, avbills, billLimits, maxBillCount=maximumBillCount, dynam
 # and if it is not possible to get the bills, return false instead of
 # the dictOfBills to make the amount
 
-def GetBills(avbills, amount, maxBillCount=maximumBillCount):
+def GetBills(availablebills, amount, maxBillCount=maximumBillCount):
+	avbills = availablebills.copy()
 	# Check if the amount is <= the total amount in the machine
 	totalAmount = sum([bill * billCount for bill, billCount in avbills.items()])
 	if amount > totalAmount:
-		return avbills, False
+		return availablebills, False
+
+	# Decide the maxBill in the avbills and delete the ones with 0 billCount
+	while(True):
+		maxBill = max(avbills)
+		if avbills[maxBill] == 0:
+			del avbills[maxBill]
+		else:
+			break
 
 	# Get the min bills solution
 	resultDob = ToDictOfBills(GetMinBills([bill for bill in avbills], amount), [bill for bill in avbills])
 
 	# If GetMinBills can't solve the amount return
 	if CountTotalPapers(resultDob) == 0:
-		return avbills, False
+		return availablebills, False
 
 	# Validate that the total paper count of the min solution is <= maxBillCount
 	if not ValidateCriteria(resultDob, maxBillCount=maxBillCount):
-		return avbills, False
+		return availablebills, False
 
 	# Validate that the required papers of each bill is available in the ATM
-	maxBill = max(avbills)
 	paperCountValidator = avbills.copy()
 	paperCountValidator[maxBill] = float("inf")
 	if not ValidateCriteria(resultDob, paperCountValidator):
 		if not AdjustPapers(resultDob, paperCountValidator):
-			return avbills, False
+			return availablebills, False
 	del paperCountValidator
 
 	# Check if the avbills are balanced #
@@ -314,17 +328,20 @@ def GetBills(avbills, amount, maxBillCount=maximumBillCount):
 		billLimits = BalancedLimits(avbills, amount)
 		wasBalanced = BalancePapers(resultDob, avbills, billLimits)
 		if not wasBalanced:
-			return avbills, False
+			return availablebills, False
 
 	# Else if not balanced, use the dynamic balancing for the output papers
 	else:
 		billLimits = {bill: min(avbillCount, billLimit) for (bill, avbillCount), billLimit in zip(avbills.items(), billLimits.values())}
 		wasBalanced = BalancePapers(resultDob, avbills, billLimits, dynamic=True)
 		if not wasBalanced:
-			return avbills, False
+			return availablebills, False
 
 	# Deduct the the results from the avbills
-	for bill in avbills:
-		avbills[bill] -= resultDob[bill]
+	for bill in availablebills:
+		try:
+			availablebills[bill] -= resultDob[bill]
+		except KeyError:
+			resultDob[bill] = 0
 
-	return avbills, resultDob
+	return availablebills, resultDob

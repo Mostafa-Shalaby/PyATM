@@ -1,4 +1,4 @@
-#from #tests import #test_func
+from tests import test_func
 from math import ceil
 
 maximumBillCount = 40
@@ -93,9 +93,36 @@ def func-for-dictOfBills(dob):
 ## Functions ##
 # -----------------------
 
+# listOfBills, listOfBills -> dictOfBills
+# Counts each bill in the tuple and represents it in a dictOfBills form
+
+def ToDictOfBills(lob, bills):
+	billDict = {bill: lob.count(bill) for bill in bills}
+	return billDict
+
+test_func(1, "ToDictOfBills", ToDictOfBills(GetMinBills([20, 50, 100, 200],930), [20, 50, 100, 200]), {20: 4, 50: 1, 100: 0, 200: 4})
+test_func(2, "ToDictOfBills", ToDictOfBills((20, 20, 20, 50, 100, 200, 100), [20, 50, 100, 200]), {20: 3, 50: 1, 100: 2, 200: 1})
+
+
+# dictOfBills -> INTEGER
+# Returns the total count of bills of a given dict of Bills
+
+def CountTotalPapers(dob):
+	return sum([billCount for billCount in dob.values()])
+
+test_func(1, "CountTotalPapers", CountTotalPapers({20: 12, 50: 3, 100: 20, 200: 5}), 40)
+
+
+# dictOfBills -> int
+# Calculates the money value of the given dob
+
+def CalculateMoneyValue(dob):
+	return sum([bill * billCount for bill, billCount in dob.items()])
+
+
 # dictOfBills -> perfectAmount
 # Calculates the billLimits and perfectAmount of a given dictOfBills
-
+# TODO: If the minBillValue is zero ignore it and take the next minBillValue
 def BalancingRequirements(dob):
 	# Get the minimum bill value and the max bill in the given dictOfBills
 	minBillValue = min([bill * billCount for bill, billCount in dob.items()])
@@ -113,26 +140,9 @@ def BalancingRequirements(dob):
 	return billLimits, perfectAmount
 
 
-#test_func(1, "BalancingRequirements", BalancingRequirements(billDict1), ({20: 6, 50: 3, 100: 2, 200: 3}, 1070))
-#test_func(2, "BalancingRequirements", BalancingRequirements(billDict2), ({20: 0, 50: 6, 100: 1, 200: 3}, 1000))
+test_func(1, "BalancingRequirements", BalancingRequirements(billDict1), ({20: 6, 50: 3, 100: 2, 200: 3}, 1070))
+test_func(2, "BalancingRequirements", BalancingRequirements(billDict2), ({20: 0, 50: 6, 100: 1, 200: 3}, 1000))
 
-# listOfBills, listOfBills -> dictOfBills
-# Counts each bill in the tuple and represents it in a dictOfBills form
-
-def ToDictOfBills(lob, bills):
-	billDict = {bill: lob.count(bill) for bill in bills}
-	return billDict
-
-#test_func(1, "ToDictOfBills", ToDictOfBills(GetMinBills([20, 50, 100, 200],930), [20, 50, 100, 200]), {20: 4, 50: 1, 100: 0, 200: 4})
-#test_func(2, "ToDictOfBills", ToDictOfBills((20, 20, 20, 50, 100, 200, 100), [20, 50, 100, 200]), {20: 3, 50: 1, 100: 2, 200: 1})
-
-# dictOfBills -> INTEGER
-# Returns the total count of bills of a given dict of Bills
-
-def CountTotalBills(dob):
-	return sum([billCount for billCount in dob.values()])
-
-#test_func(1, "CountTotalBills", CountTotalBills({20: 12, 50: 3, 100: 20, 200: 5}), 40)
 
 # dictOfBills, dictOfBills(OPTIONAL), int(OPTIONAL) -> boolean
 # Validates if the total bill paper count of the first dob is <=
@@ -141,7 +151,7 @@ def CountTotalBills(dob):
 
 def ValidateCriteria(dob, *args, maxBillCount=None):
 	if maxBillCount:
-		if CountTotalBills(dob) > maxBillCount:
+		if CountTotalPapers(dob) > maxBillCount:
 			return False
 	for dobLimits in args:
 		for bill in dob:
@@ -149,114 +159,194 @@ def ValidateCriteria(dob, *args, maxBillCount=None):
 				return False
 	return True
 
-#test_func(1, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}), True)
-#test_func(2, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}), False)
-#test_func(3, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 20, 50: 5, 100: 5, 200: 5}), True)
-#test_func(4, "ValidateCriteria", ValidateCriteria({20: 32, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, maxBillCount=40), False)
-#test_func(5, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 9}, maxBillCount=40), False)
-#test_func(6, "ValidateCriteria", ValidateCriteria({20: 0, 50: 4, 100: 1, 200: 3}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}, maxBillCount=40), True)
+test_func(1, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}), True)
+test_func(2, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}), False)
+test_func(3, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 20, 50: 5, 100: 5, 200: 5}), True)
+test_func(4, "ValidateCriteria", ValidateCriteria({20: 32, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, maxBillCount=40), False)
+test_func(5, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 9}, maxBillCount=40), False)
+test_func(6, "ValidateCriteria", ValidateCriteria({20: 0, 50: 4, 100: 1, 200: 3}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}, maxBillCount=40), True)
 
-# int -> int
-# Returns the minimum divisor of n other than 1 and returns n if n is prime
 
-def minimumDivisor(n):
-	for m in range(2, n):
-		if n % m == 0:
-			return m
-	return n
+# amount, dictOfBills -> amount, dictOfBills
+# Makes(distributes) the given amount using the papers in the given dictOfBills
+# and returns a dob representing the number of bills used to make the amount and
+# the remaining undistributed amount
 
-#test_func(1, "minimumDivisor", minimumDivisor(20), 2)
+def DistributeAmount(amount, expendableBills, expendedBills=None):
+	# Initiate the expended bills
+	if not expendedBills:
+		expendedBills = {bill: 0 for bill in expendableBills}
 
-# list -> dict
-# Checks if each bill could be represented by the lower valued bills or not and
-# returns the bills that can't and their harmonizer, which is minimum paper count
-# of this bill to be representable by lower valued bills
+	# If no remaining expendable bills, return
+	if expendableBills == dict():
+		return (amount, expendedBills)
 
-def getInharmonicCeil(lob):
-	lob = lob.copy()
-	dob = {}
-	lob = sorted(lob, reverse=True)
-	for i, b in enumerate(lob):
-		for n in lob[i+1: ]:
-			if b % n != 0:
-				dob[b] = minimumDivisor(n)
-	return dob
+	# If the amount is fully distributed, return
+	elif amount == 0:
+		return (0, expendedBills)
 
-#test_func(1, "getInharmonicCeil", getInharmonicCeil([20, 50, 100, 200]), {50: 2})
+	# We're still distributing
+	else:
+		# Get the minimum number of papers to make the amount using the expendable bills
+		minPapers = ToDictOfBills(GetMinBills([bill for bill in expendableBills], amount), [bill for bill in expendableBills])
+
+		# If the paper count is zero try to reduce the amount so that it becomes dividable by the minimum bill
+		if CountTotalPapers(minPapers) == 0:
+			minBill = min(expendableBills)
+			minPapers = ToDictOfBills(GetMinBills([bill for bill in expendableBills], amount - amount % minBill), [bill for bill in expendableBills])
+
+			# If the zero paper count insists then the amount is not representable using the given expendableBills
+			if CountTotalPapers(minPapers) == 0:
+				return amount, expendedBills
+
+		# Get the appropriate paper count of the max bill
+		maxBill = max(expendableBills)
+		expendedBills[maxBill] += min(expendableBills[maxBill], minPapers[maxBill])
+
+		# Reduce the paper count of the max bill in the expendableBills and deduct from amount
+		expendableBills[maxBill] -= expendedBills[maxBill]
+		amount -= expendedBills[maxBill] * maxBill
+		if expendableBills[maxBill] == 0:
+			del expendableBills[maxBill]
+
+		return DistributeAmount(amount, expendableBills, expendedBills)
+
+test_func(1, "DistributeAmount", DistributeAmount(200, {100: 2, 50: 4, 20: 10}), (0, {100: 2, 50: 0, 20: 0}))
+test_func(2, "DistributeAmount", DistributeAmount(200, {50: 4, 20: 10}), (0, {50: 4, 20: 0}))
+test_func(3, "DistributeAmount", DistributeAmount(200, {100: 1, 50: 4, 20: 10}), (0, {100: 1, 50: 2, 20: 0}))
+test_func(4, "DistributeAmount", DistributeAmount(200, {100: 0, 50: 0, 20: 10}), (0, {100: 0, 50: 0, 20: 10}))
+test_func(5, "DistributeAmount", DistributeAmount(100, {50: 1, 20: 2}), (10, {50: 1, 20: 2}))
+test_func(6, "DistributeAmount", DistributeAmount(200, {50: 1, 20: 6}), (30, {50: 1, 20: 6}))
+
+
+# dictOfBills, amount -> dictOfBills
+# Returns the limits to balance the result of the given amount using the bills
+# in the given dictOfBills
+
+def BalancedLimits(dob, amount):
+	maxBill = max(dob)
+	minBalancingAmount = maxBill * len(dob)
+	perfectAmount = ceil(amount/minBalancingAmount) * minBalancingAmount
+	billLimits = {bill:min(ceil(perfectAmount/len(dob)/bill), dob[bill]) for bill in dob}
+	return billLimits
+
+test_func(1, "BalancedLimits", BalancedLimits({20: 60, 50: 24, 100: 12, 200: 6}, 1300), {20: 20, 50: 8, 100: 4, 200: 2})
+test_func(2, "BalancedLimits", BalancedLimits({20: 60, 50: 24, 100: 12, 200: 6}, 800), {20: 10, 50: 4, 100: 2, 200: 1})
+test_func(3, "BalancedLimits", BalancedLimits({20: 8, 50: 5, 100: 2, 200: 1}, 300), {20: 8, 50: 4, 100: 2, 200: 1})
+test_func(4, "BalancedLimits", BalancedLimits({20: 8, 50: 5, 100: 2, 200: 1}, 1300), {20: 8, 50: 5, 100: 2, 200: 1})
+
+
+# dictOfBills, dictOfBills -> boolean
+# Adjusts the first dob to make each bill have papers less than or
+# equal to its counterpart in the second dob
+
+def AdjustPapers(dob1, dob2):
+	for bill in dob1:
+		# If the paper count of a bill exceeds the limit
+		if dob1[bill] > dob2[bill]:
+			# Get how many papers exceed the limit
+			delta = dob1[bill] - dob2[bill]
+
+			# # Get the papers of lower value that could be expended in the distribution
+			expendableBills = dict()
+			for expendableBill in dob1:
+				if expendableBill >= bill:
+					continue
+				expendableBills[expendableBill] = dob2[expendableBill] - dob1[expendableBill]
+
+			# Distribute the bill over the expendadble bills
+			remainder, expendedBills = DistributeAmount(delta*bill, expendableBills)
+			if remainder != 0:
+				return False
+			else:
+				dob1[bill] -= delta
+				for expendedBill in expendedBills:
+					dob1[expendedBill] += expendedBills[expendedBill]
+	return True
+
+test_func(1, "AdjustPapers", AdjustPapers({20: 3, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 7, 100: 1, 200: 0}), True)
+test_func(2, "AdjustPapers", AdjustPapers({20: 3, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 3, 100: 1, 200: 0}), False)
+test_func(3, "AdjustPapers", AdjustPapers({20: 4, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 3, 100: 2, 200: 0}), False)
+test_func(4, "AdjustPapers", AdjustPapers({20: 4, 50: 4, 100: 2, 200: 0}, {20: 100, 50: 3, 100: 1, 200: 0}), False)
+
 
 # dictOfBills, dictOfBills -> None
 # Balances the second dict so that all the bill values are equal but is
 # bound to the given limits in the dictOfBills and max bill count
 
-def BalanceBills(dob, availableBills, billLimits, maxBillCount=maximumBillCount):
-	# Get the bill list
-	billList = [bill for bill in dob]
-	# Get the inharmonic bills (i.e. the bills that can't be assembled by the lower valued bills)
-	inharmonicBills = getInharmonicCeil(billList)
-	# Sort the billList descendingly
-	billList = sorted(billList, reverse = True)
-	# Get the max bill
-	maxBill = billList[0]
+def BalancePapers(dob, avbills, billLimits, maxBillCount=maximumBillCount, dynamic=False):
+	maxBill = max(avbills)
 
-	while(dob[maxBill] > billLimits[maxBill]):
+	while(dob[maxBill] > min(billLimits[maxBill], avbills[maxBill])):
+		# The max bill is to be distributed over the rest of the bills
 		distributableAmount = maxBill
-		expendedBills = {bill: 0 for bill in dob}
 
 		# Make a dict of the expendable bills and their count (delta)
 		expendableBills = {bill: (billLimit - billCount) if billLimit > billCount else 0 for (bill, billCount), billLimit in zip(dob.items(), billLimits.values())}
-		# Calculate the expendableAmount
-		expendableAmount = 0
-		for bill, delta in expendableBills.items():
-			expendableAmount += bill * delta
-			if bill in inharmonicBills:
-				if delta % inharmonicBills[bill] != 0:
-					expendableAmount -= bill * 1
 
 		# Check if the distributableAmount could be distributed over the rest of the bills
-		if expendableAmount >= distributableAmount:
-			# Iterate over the bills in the bill list igonring the first element
-			# which is the maxBill
-			for bill in billList[1:]:
-				# If we could expend some papers of the bill,
-				if expendableBills[bill] > 0:
-					# Get the expended paper count
-					expendedBills[bill] += min(expendableBills[bill], distributableAmount//bill)
-					# A harmonized number of papers only is allowed for the inharmonic bills
-					if bill in inharmonicBills:
-						if expendedBills[bill] % inharmonicBills[bill] != 0:
-							expendedBills[bill] -= 1
-					# Reduce the distributableAmount
-					distributableAmount -= bill * expendedBills[bill]
-					if distributableAmount == 0:
-						break
-		else:
-			break
+		distributableAmount, expendedBills = DistributeAmount(distributableAmount, expendableBills)
 
-		# If no distribution happened, break out of the while loop
-		if expendedBills == {bill: 0 for bill in dob}:
-			break
-		else:
-			# Apply changes
-			# Reduce 1 paper from maxBill
-			dob[maxBill] -= 1
-			# Add the expendedBills to the dob
-			for bill in dob:
-				dob[bill] += expendedBills[bill]
-			# Validate that the new dob doesn't exceed the availableBills
-			# and their total paper count doesn't exceed maximumBillCount
-			if not ValidateCriteria(dob, availableBills, maxBillCount=maximumBillCount):
-				# undo the changes
-				# Add 1 paper to maxBill
-				dob[maxBill] += 1
-				# Subtract the expendedBills from the dob
+		# If not fully distributed, break out of the while loop if balancing is not dynamic
+		# but if it is dynamic adjust the limits and try to redistribute the distributableAmount
+		if distributableAmount != 0:
+			if dynamic:
+				dynamic = False
+
+				# Apply changes
+				# Add the expendedBills to the dob
 				for bill in dob:
-					dob[bill] -= expendedBills[bill]
+					dob[bill] += expendedBills[bill]
+
+				# Validate that the new dob paper count doesn't exceed maximumBillCount
+				if not ValidateCriteria(dob, maxBillCount=maximumBillCount):
+					# undo the changes
+					# Subtract the expendedBills from the dob
+					for bill in dob:
+						dob[bill] -= expendedBills[bill]
+					break
+
+				# Adjust the billLimits
+				newBillLimits = BalancedLimits(avbills, CalculateMoneyValue(dob) + distributableAmount - CalculateMoneyValue(billLimits))
+				billLimits = {bill: billLimit + newBillLimit for (bill, billLimit), newBillLimit in zip(billLimits.items(), newBillLimits.values())}
+
+				# Make a dict of the expendable bills and their count (delta)
+				expendableBills = {bill: min((billLimit - billCount), avbills[bill]) if billLimit > billCount else 0 for (bill, billCount), billLimit in zip(dob.items(), billLimits.values())}
+
+				# Try to redistribute the distributableAmount
+				distributableAmount, expendedBills = DistributeAmount(distributableAmount, expendableBills)
+				if distributableAmount != 0:
+					break
+			else:
 				break
 
-#test_func(1, "BalanceBills", BalanceBills({20: 4, 50: 1, 100: 0, 200: 4}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}), {20: 4, 50: 3, 100: 1, 200: 3})
-#test_func(2, "BalanceBills", BalanceBills({20: 0, 50: 0, 100: 0, 200: 1}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 9, 50: 1, 100: 0, 200: 0}), {20: 0, 50: 0, 100: 0, 200: 1})
-#test_func(3, "BalanceBills", BalanceBills({20: 0, 50: 0, 100: 0, 200: 40}, {20: 800, 50: 320, 100: 160, 200: 80}, {20: 100, 50: 40, 100: 20, 200: 10}), {20: 0, 50: 0, 100: 0, 200: 40})
-#test_func(4, "BalanceBills", BalanceBills({20: 0, 50: 0, 100: 0, 200: 7}, {20: 392, 50: 163, 100: 77, 200: 40}, {20: 12, 50: 11, 100: 1, 200: 2}), {20: 10, 50: 10, 100: 1, 200: 3})
+		## Apply changes
+		# Reduce 1 paper from maxBill
+		dob[maxBill] -= 1
+
+		# Add the expendedBills to the dob
+		for bill in dob:
+			dob[bill] += expendedBills[bill]
+
+		# Validate that the new dob paper count doesn't exceed maximumBillCount
+		if not ValidateCriteria(dob, maxBillCount=maximumBillCount):
+			# undo the changes
+			# Add 1 paper to maxBill
+			dob[maxBill] += 1
+
+			# Subtract the expendedBills from the dob
+			for bill in dob:
+				dob[bill] -= expendedBills[bill]
+			break
+
+	print(dob)
+	return True if dob[maxBill] <= avbills[maxBill] else False
+
+test_func(1, "BalancePapers", BalancePapers({20: 4, 50: 1, 100: 0, 200: 4}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}), {20: 4, 50: 3, 100: 1, 200: 3})
+test_func(2, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 1}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 9, 50: 1, 100: 0, 200: 0}), {20: 0, 50: 0, 100: 0, 200: 1})
+test_func(3, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 40}, {20: 800, 50: 320, 100: 160, 200: 80}, {20: 100, 50: 40, 100: 20, 200: 10}), {20: 0, 50: 0, 100: 0, 200: 40})
+#test_func(4, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 7}, {20: 392, 50: 163, 100: 77, 200: 40}, {20: 12, 50: 11, 100: 1, 200: 2}), {20: 10, 50: 10, 100: 1, 200: 3})
+
 
 # dictOfBills, amount -> dictOfBills, dictOfBills
 # Consumes a dictOfBills, which represents the available bills in the
@@ -272,48 +362,52 @@ def GetBills(avbills, amount, maxBillCount=maximumBillCount):
 	if amount > totalAmount:
 		return avbills, False
 
+	# Get the min bills solution
+	resultDob = ToDictOfBills(GetMinBills([bill for bill in avbills], amount), [bill for bill in avbills])
+
+	# Validate that the total paper count of the min solution is <= maxBillCount
+	if not ValidateCriteria(resultDob, maxBillCount=maxBillCount):
+		return avbills, False
+
+	# Validate that the required papers of each bill is available in the ATM
+	maxBill = max(avbills)
+	paperCountValidator = avbills.copy()
+	paperCountValidator[maxBill] = float("inf")
+	if not ValidateCriteria(resultDob, paperCountValidator):
+		if not AdjustPapers(resultDob, paperCountValidator):
+			return avbills, False
+	del paperCountValidator
+
+	# Check if the avbills are balanced #
+
 	# Get the amount to balance the sum of values of available bills
 	billLimits, perfectAmount = BalancingRequirements(avbills)
 
-	# If not balanced
-
-	# if amount > perfectAmount and perfectAmount > 0:
-	# 	amount = amount - perfectAmount
-	# 	# Make a dictOfBills that holds the balancing result dict
-	# 	balancingResultDict = {bill: billCount for bill, billCount in billLimits}
-	# 	# Deduct the the results from the avbills
-	# 	for bill in avbills:
-	# 		avbills[bill] -= billLimits[bill]
-	# 	ValidateCriteria(billLimits, maxBillCount=maximumBillCount)
-	# 	avbills, resultDict = GetBills(avbills, amount)
-	# 	for bill in resultDict:
-	# 		resultDict[bill] += billLimits[bill]
-	# 	return avbills, resultDict
-
-	# If balanced
+	# If balanced,just balance the output papers
 	if perfectAmount == 0:
-		maxBill = max(avbills)
-		minBalancingAmount = maxBill * len(avbills)
-		perfectAmount = ceil(amount/minBalancingAmount) * minBalancingAmount
-		billLimits = {bill:ceil(perfectAmount/len(avbills)/bill) for bill in avbills}
+		billLimits = BalancedLimits(avbills, amount)
+		wasBalanced = BalancePapers(resultDob, avbills, billLimits)
+		if not wasBalanced:
+			return avbills, False
 
-	resultDict = ToDictOfBills(GetMinBills([bill for bill in avbills], amount), [bill for bill in avbills])
-
-	if CountTotalBills(resultDict) == 0 or not ValidateCriteria(resultDict, avbills, maxBillCount=maxBillCount):
-		return avbills, False
-
-	BalanceBills(resultDict, avbills, billLimits)
+	# Else if not balanced, use the dynamic balancing for the output papers
+	else:
+		billLimits = {bill: min(avbillCount, billLimit) for (bill, avbillCount), billLimit in zip(avbills.items(), billLimits.values())}
+		wasBalanced = BalancePapers(resultDob, avbills, billLimits, dynamic=True)
+		if not wasBalanced:
+			return avbills, False
 
 	# Deduct the the results from the avbills
 	for bill in avbills:
-		avbills[bill] -= resultDict[bill]
+		avbills[bill] -= resultDob[bill]
 
-	return avbills, resultDict
+	return avbills, resultDob
 
-#test_func(1, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1300), ({20: 60, 50: 24, 100: 11, 200: 5}, {20: 0, 50: 6, 100: 2, 200: 4}))
-#test_func(2, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1000), ({20: 60, 50: 24, 100: 12, 200: 6}, {20: 0, 50: 6, 100: 1, 200: 3}))
-#test_func(3, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 930), ({20: 56, 50: 27, 100: 12, 200: 6}, {20: 4, 50: 3, 100: 1, 200: 3}))
+test_func(1, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1300), ({20: 60, 50: 24, 100: 11, 200: 5}, {20: 0, 50: 6, 100: 2, 200: 4}))
+test_func(2, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1000), ({20: 60, 50: 24, 100: 12, 200: 6}, {20: 0, 50: 6, 100: 1, 200: 3}))
+test_func(3, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 930), ({20: 56, 50: 27, 100: 12, 200: 6}, {20: 4, 50: 3, 100: 1, 200: 3}))
+test_func(4, 'GetBills', GetBills({20: 60, 50: 24, 100: 12, 200: 6}, 1200), ({20: 60, 50: 16, 100: 8, 200: 4}, {20: 0, 50: 8, 100: 4, 200: 2}))
+test_func(5, 'GetBills', GetBills({20: 489, 50: 191, 100: 100, 200: 42}, 5000), ({20: 489, 50: 183, 100: 84, 200: 27}, {20: 0, 50: 8, 100: 16, 200: 15}))
+test_func(6, 'GetBills', GetBills({20: 24, 50: 8, 100: 3, 200: 0}, 1080), ({20: 5, 50: 0, 100: 0, 200: 0}, {20: 19, 50: 8, 100: 3, 200: 0}))
 
-print(GetBills({20: 1250, 50: 500, 100: 250, 200: 124}, 312))
-print(GetMinBills([20, 50, 100, 200], 312))
-print(ToDictOfBills([], [20, 50, 100, 200]))
+print(GetBills({20: 60, 50: 30, 100: 9, 200: 10}, 130))

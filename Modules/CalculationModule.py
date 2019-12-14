@@ -1,7 +1,28 @@
-from tests import test_func
 from math import ceil
 
 maximumBillCount = 40
+
+## Data Definitions ##
+# -----------------------
+
+# bill is INTEGER
+# Interp. represents the value of a bill
+
+# billCount is INTEGER
+# Interp. represents the paper count of a bill
+
+# billValue is INTEGER
+# Interp. bill * billCount
+
+# amount is INTEGER
+# Interp. represents an amount of money to be ejected
+
+# dictOfBills is a dictionary
+# Interp. represents bills and their count
+# form -> {bill: billCount}
+
+## Functions ##
+# -----------------------
 
 def GetMinBills(bills, amount):
 	# Method Description
@@ -33,65 +54,6 @@ def GetMinBills(bills, amount):
 		result.append(bill)
 	return result
 
-## Data Definations ##
-# -----------------------
-
-# bill is INTEGER
-# Interp. represents the value of a bill
-
-"""
-def	func-for-bill(bill):
-	return (... bill)
-"""
-
-# billCount is INTEGER
-# Interp. represents the paper count of a bill
-
-"""
-def	func-for-billCount(billCount):
-	return (... billCount)
-"""
-
-# amount is INTEGER
-# Interp. represents an amount of money to be ejected
-
-"""
-def	func-for-amount(amount):
-	return (... amount)
-"""
-
-# billValue is INTEGER
-# Interp. bill * billCount
-
-"""
-def	func-for-billValue(billValue):
-	return (... billValue)
-"""
-
-# perfectAmount is INTEGER
-# Interp. represents the amount which will balance the values of
-# the available bills if subtracted from the total value of the bills
-
-"""
-def	func-for-perfectAmount(perfectAmount):
-	return (... perfectAmount)
-"""
-
-# dictOfBills is a dictionary
-# Interp. represents bills and their count
-# form -> {bill: billCount}
-
-billDict1 = {20: 36, 50: 15, 100: 8, 200: 6}
-billDict2 = {20: 60, 50: 30, 100: 13, 200: 9}
-
-"""
-def func-for-dictOfBills(dob):
-	for bill, billCount in avbills.items():
-		(... bill billCount)
-"""
-
-## Functions ##
-# -----------------------
 
 # listOfBills, listOfBills -> dictOfBills
 # Counts each bill in the tuple and represents it in a dictOfBills form
@@ -100,17 +62,12 @@ def ToDictOfBills(lob, bills):
 	billDict = {bill: lob.count(bill) for bill in bills}
 	return billDict
 
-test_func(1, "ToDictOfBills", ToDictOfBills(GetMinBills([20, 50, 100, 200],930), [20, 50, 100, 200]), {20: 4, 50: 1, 100: 0, 200: 4})
-test_func(2, "ToDictOfBills", ToDictOfBills((20, 20, 20, 50, 100, 200, 100), [20, 50, 100, 200]), {20: 3, 50: 1, 100: 2, 200: 1})
-
 
 # dictOfBills -> INTEGER
 # Returns the total count of bills of a given dict of Bills
 
 def CountTotalPapers(dob):
 	return sum([billCount for billCount in dob.values()])
-
-test_func(1, "CountTotalPapers", CountTotalPapers({20: 12, 50: 3, 100: 20, 200: 5}), 40)
 
 
 # dictOfBills -> int
@@ -140,10 +97,6 @@ def BalancingRequirements(dob):
 	return billLimits, perfectAmount
 
 
-test_func(1, "BalancingRequirements", BalancingRequirements(billDict1), ({20: 6, 50: 3, 100: 2, 200: 3}, 1070))
-test_func(2, "BalancingRequirements", BalancingRequirements(billDict2), ({20: 0, 50: 6, 100: 1, 200: 3}, 1000))
-
-
 # dictOfBills, dictOfBills(OPTIONAL), int(OPTIONAL) -> boolean
 # Validates if the total bill paper count of the first dob is <=
 # the given int and if each bill paper count is <= its counter part in
@@ -158,13 +111,6 @@ def ValidateCriteria(dob, *args, maxBillCount=None):
 			if dob[bill] > dobLimits[bill]:
 				return False
 	return True
-
-test_func(1, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}), True)
-test_func(2, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 20, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}), False)
-test_func(3, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 20, 50: 5, 100: 5, 200: 5}), True)
-test_func(4, "ValidateCriteria", ValidateCriteria({20: 32, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, maxBillCount=40), False)
-test_func(5, "ValidateCriteria", ValidateCriteria({20: 12, 50: 3, 100: 2, 200: 5}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 9}, maxBillCount=40), False)
-test_func(6, "ValidateCriteria", ValidateCriteria({20: 0, 50: 4, 100: 1, 200: 3}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}, maxBillCount=40), True)
 
 
 # amount, dictOfBills -> amount, dictOfBills
@@ -211,13 +157,6 @@ def DistributeAmount(amount, expendableBills, expendedBills=None):
 
 		return DistributeAmount(amount, expendableBills, expendedBills)
 
-test_func(1, "DistributeAmount", DistributeAmount(200, {100: 2, 50: 4, 20: 10}), (0, {100: 2, 50: 0, 20: 0}))
-test_func(2, "DistributeAmount", DistributeAmount(200, {50: 4, 20: 10}), (0, {50: 4, 20: 0}))
-test_func(3, "DistributeAmount", DistributeAmount(200, {100: 1, 50: 4, 20: 10}), (0, {100: 1, 50: 2, 20: 0}))
-test_func(4, "DistributeAmount", DistributeAmount(200, {100: 0, 50: 0, 20: 10}), (0, {100: 0, 50: 0, 20: 10}))
-test_func(5, "DistributeAmount", DistributeAmount(100, {50: 1, 20: 2}), (10, {50: 1, 20: 2}))
-test_func(6, "DistributeAmount", DistributeAmount(200, {50: 1, 20: 6}), (30, {50: 1, 20: 6}))
-
 
 # dictOfBills, amount -> dictOfBills
 # Returns the limits to balance the result of the given amount using the bills
@@ -229,11 +168,6 @@ def BalancedLimits(dob, amount):
 	perfectAmount = ceil(amount/minBalancingAmount) * minBalancingAmount
 	billLimits = {bill:min(ceil(perfectAmount/len(dob)/bill), dob[bill]) for bill in dob}
 	return billLimits
-
-test_func(1, "BalancedLimits", BalancedLimits({20: 60, 50: 24, 100: 12, 200: 6}, 1300), {20: 20, 50: 8, 100: 4, 200: 2})
-test_func(2, "BalancedLimits", BalancedLimits({20: 60, 50: 24, 100: 12, 200: 6}, 800), {20: 10, 50: 4, 100: 2, 200: 1})
-test_func(3, "BalancedLimits", BalancedLimits({20: 8, 50: 5, 100: 2, 200: 1}, 300), {20: 8, 50: 4, 100: 2, 200: 1})
-test_func(4, "BalancedLimits", BalancedLimits({20: 8, 50: 5, 100: 2, 200: 1}, 1300), {20: 8, 50: 5, 100: 2, 200: 1})
 
 
 # dictOfBills, dictOfBills -> boolean
@@ -263,11 +197,6 @@ def AdjustPapers(dob1, dob2):
 				for expendedBill in expendedBills:
 					dob1[expendedBill] += expendedBills[expendedBill]
 	return True
-
-test_func(1, "AdjustPapers", AdjustPapers({20: 3, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 7, 100: 1, 200: 0}), True)
-test_func(2, "AdjustPapers", AdjustPapers({20: 3, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 3, 100: 1, 200: 0}), False)
-test_func(3, "AdjustPapers", AdjustPapers({20: 4, 50: 3, 100: 2, 200: 0}, {20: 3, 50: 3, 100: 2, 200: 0}), False)
-test_func(4, "AdjustPapers", AdjustPapers({20: 4, 50: 4, 100: 2, 200: 0}, {20: 100, 50: 3, 100: 1, 200: 0}), False)
 
 
 # dictOfBills, dictOfBills -> None
@@ -338,14 +267,7 @@ def BalancePapers(dob, avbills, billLimits, maxBillCount=maximumBillCount, dynam
 			for bill in dob:
 				dob[bill] -= expendedBills[bill]
 			break
-
-	print(dob)
 	return True if dob[maxBill] <= avbills[maxBill] else False
-
-test_func(1, "BalancePapers", BalancePapers({20: 4, 50: 1, 100: 0, 200: 4}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 0, 50: 6, 100: 1, 200: 3}), {20: 4, 50: 3, 100: 1, 200: 3})
-test_func(2, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 1}, {20: 60, 50: 30, 100: 13, 200: 9}, {20: 9, 50: 1, 100: 0, 200: 0}), {20: 0, 50: 0, 100: 0, 200: 1})
-test_func(3, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 40}, {20: 800, 50: 320, 100: 160, 200: 80}, {20: 100, 50: 40, 100: 20, 200: 10}), {20: 0, 50: 0, 100: 0, 200: 40})
-#test_func(4, "BalancePapers", BalancePapers({20: 0, 50: 0, 100: 0, 200: 7}, {20: 392, 50: 163, 100: 77, 200: 40}, {20: 12, 50: 11, 100: 1, 200: 2}), {20: 10, 50: 10, 100: 1, 200: 3})
 
 
 # dictOfBills, amount -> dictOfBills, dictOfBills
@@ -402,12 +324,3 @@ def GetBills(avbills, amount, maxBillCount=maximumBillCount):
 		avbills[bill] -= resultDob[bill]
 
 	return avbills, resultDob
-
-test_func(1, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1300), ({20: 60, 50: 24, 100: 11, 200: 5}, {20: 0, 50: 6, 100: 2, 200: 4}))
-test_func(2, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 1000), ({20: 60, 50: 24, 100: 12, 200: 6}, {20: 0, 50: 6, 100: 1, 200: 3}))
-test_func(3, 'GetBills', GetBills({20: 60, 50: 30, 100: 13, 200: 9}, 930), ({20: 56, 50: 27, 100: 12, 200: 6}, {20: 4, 50: 3, 100: 1, 200: 3}))
-test_func(4, 'GetBills', GetBills({20: 60, 50: 24, 100: 12, 200: 6}, 1200), ({20: 60, 50: 16, 100: 8, 200: 4}, {20: 0, 50: 8, 100: 4, 200: 2}))
-test_func(5, 'GetBills', GetBills({20: 489, 50: 191, 100: 100, 200: 42}, 5000), ({20: 489, 50: 183, 100: 84, 200: 27}, {20: 0, 50: 8, 100: 16, 200: 15}))
-test_func(6, 'GetBills', GetBills({20: 24, 50: 8, 100: 3, 200: 0}, 1080), ({20: 5, 50: 0, 100: 0, 200: 0}, {20: 19, 50: 8, 100: 3, 200: 0}))
-
-print(GetBills({20: 60, 50: 30, 100: 9, 200: 10}, 130))

@@ -45,8 +45,8 @@ class Card:
 PredefinedCards = [
     Card("372995442619905", 1568, "NBE", "Ahmed Saeed" , "Feb, 2020", accountType="Saving"),
     Card("5504981108311326", 1234, "NBE", "Mohammed Khalid" ,"Feb, 2020"),
-    Card("4445544517086312", 8746, "NBE", "Osama Khalid" ,"Feb, 2020", 4, accountType="Saving"),
-    Card("377557997331297", 5648, "NBE", "Hatiem Yasser" ,"Feb, 2020", 2),
+    Card("4445544517086312", 8746, "Banque Misr", "Osama Khalid" ,"Feb, 2020", 4, accountType="Saving"),
+    Card("377557997331297", 5648, "Banque Misr", "Hatiem Yasser" ,"Feb, 2020", 2),
     Card("4445572056242236", 1564, "NBE", "Samir Ganim" ,"Feb, 2020", 5, False),
 ]
 

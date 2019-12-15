@@ -11,8 +11,17 @@ class TitleLabel(Label):
         self['bg'] = "#0c3b97"
         self['fg'] = "#f1f1f1"
     
+class SubtitleLabel(Label):
+    """Stylized Custom Label For A Service's Sub Titles"""
+    def __init__(self, parent, *args, **kwargs):
+        # Initalizes a Label, and Hard Codes Few Styles.
+        Label.__init__(self, parent, *args, **kwargs)
+        self['font'] = ("Calibri", 18)
+        self['bg'] = "#0c3b97"
+        self['fg'] = "#f1f1f1"
+
 class DetailsLabel(Label):
-    """Stylized Custom Label For A Service's Details/Sub Titles"""
+    """Stylized Custom Label For A Service's Details"""
     def __init__(self, parent, *args, **kwargs):
         # Initalizes a Label, and Hard Codes Few Styles.
         Label.__init__(self, parent, *args, **kwargs)
@@ -107,6 +116,16 @@ class WithdrawButton(CustomButton):
             CustomButton.__init__(self, parent,bg="#0077cc", hbg="#0095ff", abg="#2257bf", *args, **kwargs)
             self['width'] = 8
             self['height'] = 1
+            self['font'] = ("Calibri", 18)
+
+class WithdrawPadButton(CustomButton):
+    """Stylized Custom Button For Entering Pin Values"""
+    def __init__(self, parent, *args, **kwargs):
+        # Initalizes A Button, and Hard Codes Few Styles.
+        CustomButton.__init__(self, parent,bg="#0077cc", hbg="#0095ff", abg="#2257bf", *args, **kwargs)
+        self['height'] = 1
+        self['padx'] = 16
+        self['font'] = ("Calibri", 18)
 
 class DepositButton(CustomButton):
     """Stylized Custom Button For Deposit Service."""
@@ -114,11 +133,3 @@ class DepositButton(CustomButton):
         # Initalizes a Custom Button, and Hard Codes Few Styles.
         CustomButton.__init__(self, parent,bg="#0077cc", hbg="#0095ff", abg="#2257bf", *args, **kwargs)
         self['width'] = 2
-
-
-# class NumPadButton(CustomButton):
-#     def __init__(self, parent, *args, **kwargs):
-#         # Initalizes a Custom Button, and Hard Codes Few Styles.
-#         CustomButton.__init__(self, parent,bg="#0077cc", hbg="#0095ff", abg="#2257bf", *args, **kwargs)
-#         self['width'] = 4
-#         self['height'] = 1

@@ -4,7 +4,6 @@ from pathlib import Path
 from Interface.AppStyles import PinPadButton, PinControlButton
 
 class PinPage(Frame):
-    # Class Description
     """Creates a Frame with NumPad and A Textbox to hold a Pin Number """
     def __init__(self, parent, card, *args, **kwargs):
         # Initalizes a frame with the give parameters of the constructor
@@ -25,12 +24,9 @@ class PinPage(Frame):
         self.StatusMessage.pack(pady=(5,0))
 
     def NumPad(self):
-        # Method Description:
         """Creates a Frame and populates it with Numbered Buttons"""
-
         # Create a Frame to hold the various controls/buttons and sets its Background.
         padFrame = Frame(self, bg=self.Background)
-
         # Initalizes NumPad Buttons and Puts them in different location in a Gird that is auto generated.
         PinPadButton(padFrame, text="1", command=lambda: self.WritePin("1")).grid(row=0,column=0, padx=2, pady=2)
         PinPadButton(padFrame, text="2", command=lambda: self.WritePin("2")).grid(row=0,column=1, padx=2, pady=2)
@@ -43,21 +39,21 @@ class PinPage(Frame):
         PinPadButton(padFrame, text="9", command=lambda: self.WritePin("9")).grid(row=2,column=2, padx=2, pady=2)
         PinPadButton(padFrame, text="0", command=lambda: self.WritePin("0")).grid(row=3,column=1, padx=2, pady=2)
         # Control Buttons On the Side.
-        PinControlButton(padFrame,bg="#00b300",hbg="#00cc00",abg="#008000",text="Enter", command=lambda: self.EnterPin()).grid(row=3,column=0, padx=2, pady=2)
-        PinControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=lambda: self.ClearPin()).grid(row=3,column=2, padx=2, pady=2)     
+        PinControlButton(padFrame,bg="#00b300",hbg="#00cc00",abg="#008000",text="Enter", command=self.EnterPin).grid(row=3,column=0, padx=2, pady=2)
+        PinControlButton(padFrame,bg="#cc0058",hbg="#eb0066",abg="#990042",text="Clear", command=self.ClearPin).grid(row=3,column=2, padx=2, pady=2)     
         return padFrame    
     
     def PinTextBox(self):
         # Method Description
         """Create The Frame and Textbox to Hold the pin."""
-
         # Create a Frame to hold the various controls/buttons and sets its Background.
         pinFrame = Frame(self, bg="#333")
-        
         # Initalizes an Entry Widget(TextBox) (That Will Show * Instead of The actual Value)
         pinEntry=Entry(pinFrame,text=self.InputPin, show="*", font=("Segoe UI", 15, "bold"), borderwidth=0, bg=pinFrame['bg'], fg="#fafafa",justify=CENTER, validate="key")
         # This will limit keyboard from entering letters, or more than 4 numbers into the Textbox
         pinEntry['validatecommand'] = (pinEntry.register(self.KeyChecker),'%P','%d','%s')
+        # Adds a enter key bind to pinEntry
+        pinEntry.bind('<Return>', self.EnterPin)
         # Packs/Puts the TextBox into the Frame and adds some Padding to it.
         pinEntry.pack(padx=10, pady=7, expand=1, fill=X)
         return pinFrame
@@ -73,7 +69,7 @@ class PinPage(Frame):
         """Clears the Pin Value written in the Button"""
         self.InputPin.set("")
     
-    def EnterPin(self):
+    def EnterPin(self,*args):
         # Method Description
         """Checks the Entered PIN Pin Value written in the Button"""
         try:

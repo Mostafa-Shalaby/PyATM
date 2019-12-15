@@ -295,7 +295,7 @@ class ServicePage(Frame):
 
     def DepositCash(self):
         """Deposits money into the User's Account and updates GUI"""
-        if self.self.DepositTotal.get() != 0:
+        if self.DepositTotal.get() != 0:
             # Updates the balance value in the database.
             oldBalance, currency = DbModule.BalanceCheck(self.SelectedCard.ID, self.SelectedCard.accountType)
             DbModule.UpdateBalance((oldBalance + self.DepositTotal.get()), self.SelectedCard.ID, self.SelectedCard.accountType)

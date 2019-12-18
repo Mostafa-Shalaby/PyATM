@@ -249,9 +249,15 @@ def BalancePapers(dob, avbills, billLimits, maxBillCount=maximumBillCount, dynam
 				expendableBills = {bill: min((billLimit - billCount), avbills[bill]) if billLimit > billCount else 0 for (bill, billCount), billLimit in zip(dob.items(), billLimits.values())}
 
 				# Try to redistribute the distributableAmount
-				distributableAmount, expendedBills = DistributeAmount(distributableAmount, expendableBills)
+				distributableAmount, newExpendedBills = DistributeAmount(distributableAmount, expendableBills)
 				if distributableAmount != 0:
+					# undo the changes
+					# Subtract the expendedBills from the dob
+					for bill in dob:
+						dob[bill] -= expendedBills[bill]
 					break
+				else:
+					expendedBills = newExpendedBills
 			else:
 				break
 
@@ -291,13 +297,15 @@ def GetBills(availablebills, amount, maxBillCount=maximumBillCount):
 	if amount > totalAmount:
 		return availablebills, False
 
-	# Decide the maxBill in the avbills and delete the ones with 0 billCount
-	while(True):
-		maxBill = max(avbills)
-		if avbills[maxBill] == 0:
-			del avbills[maxBill]
-		else:
-			break
+	# Delete the bills with 0 billCount in avbills
+	billList = [bill for bill in avbills]
+	for bill in billList:
+		if avbills[bill] == 0:
+			del avbills[bill]
+	del billList
+
+	# Decide the maxBill in the avbills
+	maxBill = max(avbills)
 
 	# Get the min bills solution
 	resultDob = ToDictOfBills(GetMinBills([bill for bill in avbills], amount), [bill for bill in avbills])

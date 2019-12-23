@@ -125,9 +125,12 @@ def ValidateCriteria(dob, *args, maxBillCount=None):
 # the remaining undistributed amount
 
 def DistributeAmount(amount, expendableBills, expendedBills=None):
+	#print(amount)
+	#print(expendableBills)
 	# Initiate the expended bills
 	if not expendedBills:
 		expendedBills = {bill: 0 for bill in expendableBills}
+	#print(expendedBills)
 
 	# If no remaining expendable bills, return
 	if expendableBills == dict():
@@ -158,7 +161,8 @@ def DistributeAmount(amount, expendableBills, expendedBills=None):
 		# Reduce the paper count of the max bill in the expendableBills and deduct from amount
 		expendableBills[maxBill] -= expendedBills[maxBill]
 		amount -= expendedBills[maxBill] * maxBill
-		if expendableBills[maxBill] == 0:
+
+		if expendableBills[maxBill] == 0 or expendedBills[maxBill] == 0:
 			del expendableBills[maxBill]
 
 		return DistributeAmount(amount, expendableBills, expendedBills)
